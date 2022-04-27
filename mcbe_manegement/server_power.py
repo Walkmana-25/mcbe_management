@@ -1,9 +1,16 @@
+<<<<<<< HEAD
 import subprocess
 import os
 import exceptions
 #TODO screen がすでに存在していた時の処理
 #TODO2 標準エラー出力についての設定
 #minecraft serverが正常に起動したか確かめる(output.txtからserver startedが出力されて、3秒いないにcrashが表示されないかどうか)
+=======
+from ast import arg
+from operator import truediv
+import subprocess
+import os
+>>>>>>> 1254f7d6785c29eb062884bc70da3196b045d218
 
 
 def start(option):
@@ -15,8 +22,13 @@ def start(option):
     worlds_dir = os.path.isdir("./server/worlds")
     if not option == "force":
         if bedrock == False or properties_file == False or worlds_dir == False:
+<<<<<<< HEAD
             raise exceptions.Required_file_does_not_exist()
     
+=======
+            return "Can not start server. Required file does not exist"
+    current = os.getcwd()
+>>>>>>> 1254f7d6785c29eb062884bc70da3196b045d218
     #screen の準備
     server_dir = os.path.abspath("./server/")
     args = ["screen", "-dmS", "mcbe_server"]
