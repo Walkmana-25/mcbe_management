@@ -37,4 +37,17 @@ def start(option):
     args = (r"screen -S mcbe_server -X stuff 'LD_LIBRARY_PATH=. ./bedrock_server > output.txt \n'")
     result = subprocess.run(args, cwd=server_dir, shell=True)
 
-    return 
+
+    #bedrock serverのコンソール上でServer startedが表示されているか確認
+    f = open("./server/output.txt", "r")
+    for i in range(11):
+        console = f.read()
+        console_out = "start" in console
+        if console_out == True:
+            break
+        elif i == 10:
+            f.close
+            raise exceptions.server_timeout()
+
+    f.close
+    return "Server Started!"
