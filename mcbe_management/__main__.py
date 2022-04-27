@@ -1,12 +1,12 @@
 import sys
 import fire
-import server_power
+from mcbe_management import exceptions, server_power
 
 
-import exceptions
 class server_io(object):
 
     def start(option="normal"):
+        ans = ""
         """Start Server(To force activation, use the --force)"""
         try:
             ans = server_power.start(option)
@@ -19,7 +19,7 @@ class server_io(object):
 
 
 
-    def stop():
+    def stop(self):
         """Stop Server"""
         out = server_power.stop()
         return out
