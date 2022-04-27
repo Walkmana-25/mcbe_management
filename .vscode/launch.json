@@ -4,6 +4,8 @@
     // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+
         {
             "name": "Python: Current File",
             "type": "python",
@@ -12,7 +14,7 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
-                ""
+                "stop"
             ]
         }
     ]

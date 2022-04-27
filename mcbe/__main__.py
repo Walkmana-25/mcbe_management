@@ -12,7 +12,10 @@ def start(option="normal"):
         print("Error:Required File does not exist.", file=sys.stderr)
     except exceptions.screen_already_exists:
         print("Error: Server has already started.", file=sys.stderr)
+
     return ans
+
+
     
 def stop():
     """Stop Server"""
