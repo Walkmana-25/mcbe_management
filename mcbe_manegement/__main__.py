@@ -10,7 +10,8 @@ def start(option="normal"):
         ans = server_power.start(option)
     except exceptions.Required_file_does_not_exist:
         print("Error:Required File does not exist.", file=sys.stderr)
-    return 
+    except exceptions.screen_already_exists:
+        print("Error: Server has already started.", file=sys.stderr)
     
 
 
