@@ -1,8 +1,8 @@
-from ast import arg
-from operator import truediv
 import subprocess
 import os
-
+#TODO screen がすでに存在していた時の処理
+#TODO2 標準エラー出力についての設定
+#minecraft serverが正常に起動したか確かめる(output.txtからserver startedが出力されて、3秒いないにcrashが表示されないかどうか)
 
 def start(option):
     
