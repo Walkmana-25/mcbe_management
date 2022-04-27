@@ -6,7 +6,6 @@ import exceptions
 #minecraft serverが正常に起動したか確かめる(output.txtからserver startedが出力されて、3秒いないにcrashが表示されないかどうか)
 
 
-
 def start(option):
     
     #最低限必要なファイルが存在しているか確認
@@ -17,8 +16,16 @@ def start(option):
     if not option == "force":
         if bedrock == False or properties_file == False or worlds_dir == False:
 
-            raise exceptions.Required_file_does_not_exist()
+            raise exceptions.Required_file_does_not_exist()#存在しなかったらエラー
     
+    #screenがすでに存在しているか確かめる
+    screen_test = subprocess.run(["screen","-ls"], encoding="utf-8", stdout=subprocess.PIPE)
+    if not option == "force":
+        screen_exist = "There are" in screen_test.stdout
+        if screen_exist == True:
+            raise exceptions.screen_already_exists()#screenがすでに存在してたらエラー
+
+
 
     #screen の準備
     server_dir = os.path.abspath("./server/")
@@ -27,7 +34,7 @@ def start(option):
 
     #screen上でサーバーを起動させる
     
-    args = (r"screen -S mcbe_server -X stuff 'LD_LIBRARY_PATH=. ./bedrock_server >> output.txt \n'")
+    args = (r"screen -S mcbe_server -X stuff 'LD_LIBRARY_PATH=. ./bedrock_server > output.txt \n'")
     result = subprocess.run(args, cwd=server_dir, shell=True)
 
     return 
