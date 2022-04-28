@@ -8,12 +8,11 @@ from mcbe_management import exceptions
 
 
 def start(option):
-    
     #最低限必要なファイルが存在しているか確認
     #bedrock_server,server.properties,worldsフォルダ
-    bedrock = os.path.isfile("./server/bedrock_server")
-    properties_file = os.path.isfile("./server/bedrock_server")
-    worlds_dir = os.path.isdir("./server/worlds")
+    bedrock = os.path.isfile("/var/games/mcbe/server/bedrock_server")
+    properties_file = os.path.isfile("/var/games/mcbe/server/server.properties")
+    worlds_dir = os.path.isdir("/var/games/mcbe/server/worlds")
     if not option == "force":
         if bedrock == False or properties_file == False or worlds_dir == False:
 
@@ -29,7 +28,7 @@ def start(option):
 
 
     #screen の準備
-    server_dir = os.path.abspath("./server/")
+    server_dir = "/var/games/mcbe/server/"
     args = ["screen", "-dmS", "mcbe_server"]
     subprocess.check_output(args, cwd=server_dir)#サーバー実行用のscreenを立ち上げる
 
@@ -40,7 +39,7 @@ def start(option):
 
 
     #bedrock serverのコンソール上でServer startedが表示されているか確認
-    f = open("./server/output.txt", "r")
+    f = open("/var/games/mcbe/server/output.txt", "r")
     for i in range(11):
         console = f.read()
         console_out = "start" in console
@@ -68,7 +67,7 @@ def stop():
     result = subprocess.run(args, shell=True)
 
     #bedrock serverのコンソール上でQuit correctlyが表示されているか確認
-    f = open("./server/output.txt", "r")
+    f = open("/var/games/mcbe/server/output.txt", "r")
     while True:
         console = f.read()
         console_out = "Quit correctly" in console
@@ -84,3 +83,5 @@ def stop():
 
     
     return "Server Stoped"
+
+stop()
