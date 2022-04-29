@@ -84,4 +84,3 @@ def stop():
     
     return "Server Stoped"
 
-stop()
