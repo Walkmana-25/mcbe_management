@@ -52,7 +52,7 @@ def get_update_url():
     #print(elements.get_attribute("herf"))    
     
     browser.quit()
-    #return url
+    
 
 
 
