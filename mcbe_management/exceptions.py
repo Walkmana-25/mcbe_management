@@ -9,3 +9,6 @@ class screen_already_exists(Exception):
 class server_timeout(Exception):
     """サーバーが規定時間以内に起動しないときに発生する例外クラス"""
     pass
+class Required_package_does_not_installed(Exception):
+    """必要なパッケージがインストールされていないときに発生する例外クラス"""
+    pass
