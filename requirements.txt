@@ -1,3 +1,4 @@
 fire
 selenium
 chromedriver_binary
+requests
