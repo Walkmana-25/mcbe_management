@@ -12,3 +12,6 @@ class server_timeout(Exception):
 class Required_package_does_not_installed(Exception):
     """必要なパッケージがインストールされていないときに発生する例外クラス"""
     pass
+class Server_already_installed(Exception):
+    """サーバーを二回インストールしようとしたときに発生する例外クラス"""
+    pass

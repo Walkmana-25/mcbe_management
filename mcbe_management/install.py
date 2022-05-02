@@ -9,7 +9,7 @@ import shutil
 def install():
     #サーバーがインストール済みか判別
     if lib.check_installed() == True:
-        return "MCBE Server Installed"
+        raise exceptions.Server_already_installed
         
 
     #Google Chromeがインストール済みか判別
