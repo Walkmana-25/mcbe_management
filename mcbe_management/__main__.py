@@ -1,7 +1,7 @@
 import subprocess
 import sys
 import fire
-from mcbe_management import exceptions, server_power
+from mcbe_management import exceptions, server_power, install
 
 
 class server_io(object):
@@ -36,6 +36,14 @@ class server_io(object):
         out = server_power.stop()
         return out
 
+    def install(self):
+        """Install Server"""
+        try:
+            out = install.install()
+        except exceptions.Server_already_installed:
+            print("Server has already installed.")
+        except exceptions.Required_package_does_not_installed:
+            print("Google Chrome or Screen is not installed. Please install them.", file=sys.stderr)
 def main():
     fire.Fire(server_io)
 
