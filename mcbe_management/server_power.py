@@ -12,9 +12,8 @@ def start(option):
     #bedrock_server,server.properties,worldsフォルダ
     bedrock = os.path.isfile("/var/games/mcbe/server/bedrock_server")
     properties_file = os.path.isfile("/var/games/mcbe/server/server.properties")
-    worlds_dir = os.path.isdir("/var/games/mcbe/server/worlds")
     if not option == "force":
-        if bedrock == False or properties_file == False or worlds_dir == False:
+        if bedrock == False or properties_file == False:
 
             raise exceptions.Required_file_does_not_exist()#存在しなかったらエラー
     
