@@ -1,8 +1,11 @@
 import subprocess
 import os 
-from mcbe_management import lib, exceptions
+#from mcbe_management import lib, exceptions
+import lib, exceptions#for dev
 import sys
 import shutil
+
+
 
 
 
@@ -27,7 +30,7 @@ def install():
 
     
     #/var/games/mcbe/を作成
-    os.makedirs("/var/games/mcbe/")
+    os.makedirs("/var/games/mcbe/lock", exist_ok=True)
 
 
     #bedrock serverのインストール
@@ -50,6 +53,9 @@ def install():
 
     print("Please edit /var/games/mcbe/server/server.properties")
     print("After, You can start server with mcbe start")
+
+
+
 
 
 

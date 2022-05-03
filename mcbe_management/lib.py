@@ -1,5 +1,6 @@
 import os
-from mcbe_management import get_update
+#from mcbe_management import get_update
+import get_update
 import urllib.request
 import zipfile
 import subprocess
