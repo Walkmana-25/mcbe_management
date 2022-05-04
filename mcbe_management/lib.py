@@ -27,9 +27,5 @@ def server_download():#MCBE ServerをDLして解凍する
 
 def check_server_started():
     """サーバーが起動しているか判別するよ"""
-    screen_test = subprocess.run(["screen","-ls"], encoding="utf-8", stdout=subprocess.PIPE)
-    screen_exist = "mcbe" in screen_test.stdout
-    if screen_exist == True:
-        return True
-    else:
-        return False
+    return os.path.isfile("/var/games/mcbe/lock/started")
+
