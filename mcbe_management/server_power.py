@@ -1,7 +1,7 @@
 import subprocess
 import os
 import time
-import exceptions
+import exceptions, lib
 #TODO screen がすでに存在していた時の処理
 #TODO2 標準エラー出力についての設定
 #minecraft serverが正常に起動したか確かめる(output.txtからserver startedが出力されて、3秒いないにcrashが表示されないかどうか)
@@ -17,13 +17,10 @@ def start(option):
 
             raise exceptions.Required_file_does_not_exist()#存在しなかったらエラー
     
-    #screenがすでに存在しているか確かめる
-    screen_test = subprocess.run(["screen","-ls"], encoding="utf-8", stdout=subprocess.PIPE)
-    if not option == "force":
-        screen_exist = "There are" in screen_test.stdout
-        if screen_exist == True:
-            raise exceptions.screen_already_exists()#screenがすでに存在してたらエラー
-
+    #サーバーがすでに起動しているか確かめる
+    
+    if lib.check_server_started == True:
+        raise exceptions.screen_already_exists()
 
 
     #screen の準備
@@ -50,6 +47,14 @@ def start(option):
         time.sleep(1)
 
     f.close
+    #server startしていることを示すlockファイルを生成する
+    f = open("/var/games/mcbe/server/lock/started", "w")
+    f.write("")
+    f.close()
+
+
+
+
     return "Server Started!"
 
 def stop():
