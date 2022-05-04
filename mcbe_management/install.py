@@ -39,7 +39,9 @@ def install():
     print("Installing")
     shutil.copytree("/tmp/mcbe_manegement/server","/var/games/mcbe/server")
     #パーミッションの変更
+
     os.chmod("/var/games/mcbe/server/bedrock_server", 755)
+
     print("Install Completed!")
 
     #インストールした印を作る
