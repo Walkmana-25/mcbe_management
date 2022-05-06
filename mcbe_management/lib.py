@@ -39,7 +39,7 @@ def excute_inside_server(input):
         raise exceptions.Server_is_not_running
 
     #output.txtの行数を取得する
-    before_output_line = int(subprocess.check_output(["wc", "l", "/var/games/mcbe/output.txt"]).decode().split()[0])
+    before_output_line = int(subprocess.check_output(["wc", "-l", "/var/games/mcbe/server/output.txt"]).decode().split()[0])
     #output.txtのハッシュ値の取得
     with open("/var/games/mcbe/server/output.txt","rb") as file:
         fileData = file.read()
@@ -70,13 +70,13 @@ def excute_inside_server(input):
     output = ""
     line_num = 1
     for line in output_file:
-        if line_num < before_output_line:
+        if line_num > before_output_line:
             output += f"{line}\n"
         line_num += 1
 
     return output
 
-    
+print(excute_inside_server(input()))    
 
 
 
