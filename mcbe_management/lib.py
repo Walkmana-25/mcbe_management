@@ -38,13 +38,8 @@ def excute_inside_server(input):
     if check_server_started() == False:
         raise exceptions.Server_is_not_running
 
-    #時間の取得
-    unix_time = int(time.time())
-
-    #output.txtのコピー
-    output_file = f"output-{unix_time}"
-    shutil.copy("/var/games/games/server/output.txt", f"/tmp/{output_file}")
-
+    #output.txtの行数を取得する
+    before_output_line = int(subprocess.check_output(["wc", "l", "/var/games/mcbe/output.txt"]).decode().split()[0])
     #output.txtのハッシュ値の取得
     with open("/var/games/mcbe/server/output.txt","rb") as file:
         fileData = file.read()
@@ -64,8 +59,4 @@ def excute_inside_server(input):
             after_md5 = hashlib.md5(fileData).hexdigest()
             if after_md5 == before_md5:
                 break
-
-
-    
-
-
+                
