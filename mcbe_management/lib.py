@@ -59,4 +59,24 @@ def excute_inside_server(input):
             after_md5 = hashlib.md5(fileData).hexdigest()
             if after_md5 == before_md5:
                 break
-                
+    #処理後のoutput.txtの行数を取得
+    #after_output_line = int(subprocess.check_output(["wc", "l", "/var/games/mcbe/output.txt"]).decode().split()[0])
+
+    #取得しないといけない行数を取得(後ろから)
+    #get_line = after_output_line - before_output_line
+
+    #データを取得
+    output_file =  open("/var/games/mcbe/server/output.txt","rt")
+    output = ""
+    line_num = 1
+    for line in output_file:
+        if line_num < before_output_line:
+            output += f"{line}\n"
+        line_num += 1
+
+    return output
+
+    
+
+
+
