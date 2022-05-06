@@ -58,14 +58,10 @@ def start(option):
     return "Server Started!"
 
 def stop():
-    #screenがすでに存在しているか確認
-    #screenがすでに存在しているか確かめる
-    screen_test = subprocess.run(["screen","-ls"], encoding="utf-8", stdout=subprocess.PIPE)
+    #サーバーが起動しているか確かめる
+    if lib.check_server_started() == False:
+        return "Server is not running"
     
-    screen_exist = "mcbe_server" in screen_test.stdout
-    if screen_exist == False:
-        return "Server is not running."
-
     #サーバー停止信号を送る
     args = (r"screen -S mcbe_server -X stuff 'stop \n'")
     result = subprocess.run(args, shell=True)
@@ -84,6 +80,8 @@ def stop():
     args = (r"screen -S mcbe_server -X stuff 'exit \n'")
     result = subprocess.run(args, shell=True)
 
+    #lockファイルの削除
+    os.remove("/var/games/mcbe/server/lock/started")
 
     
     return "Server Stoped"
