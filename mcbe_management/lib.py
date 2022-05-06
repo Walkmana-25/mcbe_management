@@ -1,4 +1,5 @@
 import os
+import shutil
 #from mcbe_management import get_update
 import get_update, exceptions
 import urllib.request
@@ -37,6 +38,10 @@ def excute_inside_server(input):
         raise exceptions.Server_is_not_running
 
     #時間の取得
-    unix_time = time.time()
-    
+    unix_time = int(time.time())
 
+    #output.txtのコピー
+    output_file = f"output-{unix_time}"
+    shutil.copy("/var/games/server/output.txt", f"/tmp/{output_file}")
+    
+ 
