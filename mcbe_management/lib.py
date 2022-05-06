@@ -4,6 +4,7 @@ import get_update, exceptions
 import urllib.request
 import zipfile
 import subprocess
+import time
 
 def check_installed():#インストール済みか判別
     """サーバーがインストール済みか判別"""
@@ -34,4 +35,8 @@ def excute_inside_server(input):
     #サーバーが起動しているか確認
     if check_server_started() == False:
         raise exceptions.Server_is_not_running
+
+    #時間の取得
+    unix_time = time.time()
     
+
