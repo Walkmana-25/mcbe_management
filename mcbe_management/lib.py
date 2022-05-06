@@ -55,4 +55,15 @@ def excute_inside_server(input):
     args = (f"screen -S mcbe_server -X stuff '{input} \n'")
     result = subprocess.run(args, shell=True)
 
+    #output.txtのハッシュ値が更新されるまで待つ(timeoutは5s)(1sごとに)
+    for i in range(5):
+        with open("/var/games/mcbe/server/output.txt","rb") as file:
+            time.sleep(1)
+            fileData = file.read()
+            after_md5 = hashlib.md5(fileData).hexdigest()
+            if after_md5 == before_md5:
+                break
+
+    
+
 
