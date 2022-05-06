@@ -1,5 +1,7 @@
 import lib, exceptions
+import datetime
 import time
+import os
 
 
 
@@ -18,3 +20,12 @@ def backup():
             if "saved" in save_result:
                 break
             time.sleep(1)
+
+    #日時の取得
+    dt = datetime.datetime.today()
+    today = f"{dt.year}{dt.month}{dt.day}"
+    now = f"{dt.hour}{dt.minute}{dt.second}"
+
+    
+
+
