@@ -48,7 +48,7 @@ def start(option):
 
     f.close
     #server startしていることを示すlockファイルを生成する
-    f = open("/var/games/mcbe/server/lock/started", "w")
+    f = open("/var/games/mcbe/lock/started", "w")
     f.write("")
     f.close()
 
@@ -81,7 +81,7 @@ def stop():
     result = subprocess.run(args, shell=True)
 
     #lockファイルの削除
-    os.remove("/var/games/mcbe/server/lock/started")
+    os.remove("/var/games/mcbe/lock/started")
 
     
     return "Server Stoped"
