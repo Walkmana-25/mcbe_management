@@ -76,7 +76,7 @@ def excute_inside_server(input):
 
     return output
 
-print(excute_inside_server(input()))    
+  
 
 
 
