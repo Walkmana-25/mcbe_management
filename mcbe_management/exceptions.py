@@ -15,3 +15,5 @@ class Required_package_does_not_installed(Exception):
 class Server_already_installed(Exception):
     """サーバーを二回インストールしようとしたときに発生する例外クラス"""
     pass
+class Server_is_not_running(Exception):
+    """サーバーが起動していないときに発生する例外クラス"""
