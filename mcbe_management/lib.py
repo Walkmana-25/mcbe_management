@@ -6,6 +6,7 @@ import urllib.request
 import zipfile
 import subprocess
 import time
+import hashlib
 
 def check_installed():#インストール済みか判別
     """サーバーがインストール済みか判別"""
@@ -42,6 +43,16 @@ def excute_inside_server(input):
 
     #output.txtのコピー
     output_file = f"output-{unix_time}"
-    shutil.copy("/var/games/server/output.txt", f"/tmp/{output_file}")
+    shutil.copy("/var/games/games/server/output.txt", f"/tmp/{output_file}")
+
+    #output.txtのハッシュ値の取得
+    with open("/var/games/mcbe/server/output.txt","rb") as file:
+        fileData = file.read()
+        before_md5 = hashlib.md5(fileData).hexdigest()
+
     
- 
+    #screen内でcommandの実行
+    args = (f"screen -S mcbe_server -X stuff '{input} \n'")
+    result = subprocess.run(args, shell=True)
+
+
