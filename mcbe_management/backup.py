@@ -26,6 +26,14 @@ def backup():
     today = f"{dt.year}{dt.month}{dt.day}"
     now = f"{dt.hour}{dt.minute}{dt.second}"
 
+    #バックアップパスを設定
+    backup_dir = f"/var/games/mcbe/backup/{today}"
+    backup_base_file = f"{backup_dir}/backup-base.tar.gz"
+    backup_file = f"{backup_dir}/{today}.tar.gz"
+
+    
+
+
     
 
 
