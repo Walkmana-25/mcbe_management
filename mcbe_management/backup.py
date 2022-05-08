@@ -31,6 +31,11 @@ def backup():
     backup_base_file = f"{backup_dir}/backup-base.tar.gz"
     backup_file = f"{backup_dir}/{today}.tar.gz"
 
+    #tmpフォルダーの作成
+    os.makedirs(f"/tmp/mcbe_manegement/backup/{today}/{now}")
+    os.makedirs(f"/tmp/mcbe_manegement/backup/backupbase/{today}/{now}")
+    
+
     
 
 
