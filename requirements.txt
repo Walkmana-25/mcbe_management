@@ -1,4 +1,4 @@
 fire
 selenium
-chromedriver_binary
+chromedriver_binary-auto
 requests
