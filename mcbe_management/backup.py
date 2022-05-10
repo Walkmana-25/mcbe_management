@@ -74,6 +74,13 @@ def restore():
         print(f)
     print("---------------------")
 
+    #ユーザーの入力がリストに含まれているか確認する
+    while True:
+        user_input_time = str(input())
+        if user_input_time in files_dir:
+            break
+        else:
+            print(f"{user_input_time} is not in list")
     
     
 
