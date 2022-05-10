@@ -48,12 +48,14 @@ def backup():
     args = ["rsync", "-a", f"--link-dest={backup_base_dir}", "/var/games/mcbe/server/worlds/", f'{backup_now_dir}']
     result = subprocess.check_output(args)
 
-    
-
-
-print(backup())
-
-    
+def restore():
+    #バックアップ対象の日付を選択するためにlistを取得して、その内容を出力する
+    files = os.listdir("/var/games/mcbe/backup")
+    print("Please select the restore target (date)")
+    print("---------------------")
+    for f in files:
+        print(f)
+    print("---------------------")
     
 
 
