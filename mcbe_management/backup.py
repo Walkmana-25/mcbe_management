@@ -51,7 +51,7 @@ def backup():
 def restore():
     #バックアップ対象の日付を選択するためにlistを取得して、その内容を出力する
     files = os.listdir("/var/games/mcbe/backup")
-    print("Please select the restore target (date)")
+    print("Please select the restore target in list")
     print("---------------------")
     for f in files:
         print(f)
@@ -62,6 +62,18 @@ def restore():
         user_input = str(input())
         if user_input in files:
             break
+        else:
+            print(f"{user_input} is not in list")
+
+    #バックアップ対象の時間を選択するためにlistを取得して、その内容を出力する
+    files = os.listdir(f"/var/games/mcbe/backup/{user_input}")
+    print("Please select the restore target in list")
+    print("---------------------")
+    for f in files:
+        print(f)
+    print("---------------------")
+
+    
     
 
 
