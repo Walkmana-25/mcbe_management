@@ -48,10 +48,12 @@ def backup():
         shutil.copy2("/var/games/mcbe/server/permissions.json", f"{backup_dir}permissions.json")
 
     #rsyncによる差分バックアップを実行する
-    args = ["rsync", "-a", "--link-desk=", backup_base_dir, "/var/games/mcbe/server/", backup_tmp_dir]
+    args = ["rsync", "-a", "--link-desk=", backup_base_dir, "/var/games/mcbe/server/", backup_dir]
     subprocess.check_output(args)
 
     
+
+
 
 
     
