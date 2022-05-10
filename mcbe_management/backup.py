@@ -29,24 +29,26 @@ def backup():
     now = f"{dt.hour}{dt.minute}{dt.second}"
 
     #バックアップパスを設定
-    backup_dir = f"/var/games/mcbe/backup/{today}"
-    backup_base_dir = f"{backup_dir}/backup-base"
+    backup_dir = f"/var/games/mcbe/backup/{today}/"
+    backup_base_dir = f"{backup_dir}/backup-base/"
     backup_file = f"{backup_dir}/{today}.tar.gz"
+    backup_tmp_dir = f"/tmp/mcbe_manegement/backup/{today}/{now}/"
 
     #tmpフォルダーの作成
-    os.makedirs(f"/tmp/mcbe_manegement/backup/{today}/{now}")
+    os.makedirs(backup_tmp_dir)
 
     #本日分のbackup-baseが存在するか確認し、あればbackup-baseを作成する
     #同時に、server.properties, allowlist.json, permissions.jsonもコピーする
     if os.path.exists(backup_base_dir) == True:
         os.makedirs(backup_base_dir)
-        args =["rsync", "-avh", "/var/games/mcbe/server/worlds", backup_base_dir]
+        args =["rsync", "-a", "/var/games/mcbe/server/worlds/", f"{backup_base_dir}"]
         subprocess.check_output(args)
-        shutil.copy2("/var/games/mcbe/server/server.properties", f"{backup_dir}/server.properties")
-        shutil.copy2("/var/games/mcbe/server/allowlist.json", f"{backup_dir}/allowlist.json")
-        shutil.copy2("/var/games/mcbe/server/permissions.json", f"{backup_dir}/permissions.json")
+        shutil.copy2("/var/games/mcbe/server/server.properties", f"{backup_dir}server.properties")
+        shutil.copy2("/var/games/mcbe/server/allowlist.json", f"{backup_dir}allowlist.json")
+        shutil.copy2("/var/games/mcbe/server/permissions.json", f"{backup_dir}permissions.json")
 
-
+    #rsyncによる差分バックアップを実行する
+    
 
 
     
