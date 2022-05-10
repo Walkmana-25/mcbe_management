@@ -9,10 +9,8 @@ import shutil
 
 def backup():
     #サーバーが起動しているか判別する
-    server_started = lib.check_server_started
-
     #サーバーが起動している時の処理
-    if server_started == True:
+    if os.path.isfile("/var/games/mcbe/lock/started") == False:
         lib.excute_inside_server("save hold")#bedrock serverで、worldsフォルダーをlockする
         #server側から、保存が終わったことを通知されるまで待つ(timeoutは5回)
         for i in range(6):
