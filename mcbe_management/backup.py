@@ -41,13 +41,16 @@ def backup():
     #同時に、server.properties, allowlist.json, permissions.jsonもコピーする
     if os.path.exists(backup_base_dir) == True:
         os.makedirs(backup_base_dir)
-        args =["rsync", "-a", "/var/games/mcbe/server/worlds/", f"{backup_base_dir}"]
+        args = ["rsync", "-a", "/var/games/mcbe/server/worlds/", f"{backup_base_dir}"]
         subprocess.check_output(args)
         shutil.copy2("/var/games/mcbe/server/server.properties", f"{backup_dir}server.properties")
         shutil.copy2("/var/games/mcbe/server/allowlist.json", f"{backup_dir}allowlist.json")
         shutil.copy2("/var/games/mcbe/server/permissions.json", f"{backup_dir}permissions.json")
 
     #rsyncによる差分バックアップを実行する
+    args = ["rsync", "-a", "--link-desk=", backup_base_dir, "/var/games/mcbe/server/", backup_tmp_dir]
+    subprocess.check_output(args)
+
     
 
 
