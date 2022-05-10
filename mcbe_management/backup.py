@@ -25,8 +25,8 @@ def backup():
 
     #日時の取得
     dt = datetime.datetime.today()
-    today = f"{dt.year}{dt.month}{dt.day}"
-    now = f"{dt.hour}{dt.minute}{dt.second}"
+    today = "{0:%Y-%m-%d}".format(dt)
+    now = "{0:%H-%M-%S}".format(dt)
 
     #バックアップパスを設定
     backup_dir = f"/var/games/mcbe/backup/{today}/"
@@ -38,7 +38,7 @@ def backup():
 
     #本日分のbackup-baseが存在するか確認し、あればbackup-baseを作成する
     #同時に、server.properties, allowlist.json, permissions.jsonもコピーする
-    if os.path.exists(backup_base_dir) == True:
+    if os.path.exists(backup_base_dir) == False:
         os.makedirs(backup_base_dir)
         args = ["rsync", "-a", "/var/games/mcbe/server/worlds/", f"{backup_base_dir}"]
         subprocess.check_output(args)
@@ -47,13 +47,13 @@ def backup():
         shutil.copy2("/var/games/mcbe/server/permissions.json", f"{backup_dir}permissions.json")
 
     #rsyncによる差分バックアップを実行する
-    args = ["rsync", "-a", "--link-desk=", backup_base_dir, "/var/games/mcbe/server/", backup_now_dir]
-    subprocess.check_output(args)
+    args = ["rsync", "-a", f"--link-dest={backup_base_dir}", "/var/games/mcbe/server/worlds/", f'{backup_now_dir}']
+    result = subprocess.check_output(args)
 
     
 
 
-
+print(backup())
 
     
     
