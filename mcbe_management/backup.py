@@ -82,9 +82,20 @@ def restore():
         else:
             print(f"{user_input_time} is not in list")
     
-    
+    #リストアを実行するか聞く
+    print(f"Restore to data as of {user_input_date}-{user_input_time}")
+    print("Format:yyyy:mm:dd:hh:mm:ss")
+    print("Are you sure? y or n")
 
-
+    #y or nを判定する
+    while True:
+        user_input_agree = str(input())
+        if user_input_agree == "y":
+            break
+        elif user_input_agree == "n":
+            exit()
+        else:
+            print(f"Please enter y or n")
     
 
 
