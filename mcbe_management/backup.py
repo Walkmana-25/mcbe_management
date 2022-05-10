@@ -59,17 +59,18 @@ def restore():
 
     #ユーザーの入力がリストに含まれているか確認する
     while True:
-        user_input = str(input())
-        if user_input in files:
+        user_input_date = str(input())
+        if user_input_date in files:
             break
         else:
-            print(f"{user_input} is not in list")
+            print(f"{user_input_date} is not in list")
 
     #バックアップ対象の時間を選択するためにlistを取得して、その内容を出力する
-    files = os.listdir(f"/var/games/mcbe/backup/{user_input}")
+    files = os.listdir(f"/var/games/mcbe/backup/{user_input_date}")
+    files_dir = [f for f in files if os.path.isdir(os.path.join(f"/var/games/mcbe/backup/{user_input_date}", f))]
     print("Please select the restore target in list")
     print("---------------------")
-    for f in files:
+    for f in files_dir:
         print(f)
     print("---------------------")
 
