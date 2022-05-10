@@ -56,6 +56,12 @@ def restore():
     for f in files:
         print(f)
     print("---------------------")
+
+    #ユーザーの入力がリストに含まれているか確認する
+    while True:
+        user_input = str(input())
+        if user_input in files:
+            break
     
 
 
