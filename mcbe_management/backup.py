@@ -106,7 +106,13 @@ def restore():
     print("Worlds Data backup...")
     backup()#念のためのバックアップ実行
 
-    
+    #コピーソースの指定
+    restore_source_dir = f"/var/games/mcbe/backup/{user_input_date}/{user_input_time}"
+    copy_file_source = [
+        f"/var/games/mcbe/backup/{user_input_date}/allowlist.json",
+        f"/var/games/mcbe/backup/{user_input_date}/permission.json",
+        f"/var/games/mcbe/backup/{user_input_date}/server.properties"
+    ]
     
     
 
