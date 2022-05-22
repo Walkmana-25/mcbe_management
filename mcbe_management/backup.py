@@ -110,9 +110,18 @@ def restore():
     restore_source_dir = f"/var/games/mcbe/backup/{user_input_date}/{user_input_time}"
     copy_file_source = [
         f"/var/games/mcbe/backup/{user_input_date}/allowlist.json",
-        f"/var/games/mcbe/backup/{user_input_date}/permission.json",
+        f"/var/games/mcbe/backup/{user_input_date}/permissions.json",
         f"/var/games/mcbe/backup/{user_input_date}/server.properties"
     ]
+
+    #削除するフォルダー、ファイルの指定
+    delete_dir = "/var/games/mcbe/server/worlds"
+    delete_files = [
+        "/var/games/mcbe/server/allowlist.json",
+        "/var/games/mcbe/server/permissions.json",
+        "/var/games/mcbe/server/server.properties"
+    ]
+
     
     
 
