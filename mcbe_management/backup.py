@@ -115,15 +115,20 @@ def restore():
     ]
 
     #削除するフォルダー、ファイルの指定
-    delete_dir = "/var/games/mcbe/server/worlds"
+    delete_dir = "/var/games/mcbe/server/worlds/"
     delete_files = [
         "/var/games/mcbe/server/allowlist.json",
         "/var/games/mcbe/server/permissions.json",
         "/var/games/mcbe/server/server.properties"
     ]
 
-    
-    
+    #ファイルの削除の実行
+    #delete_filesの中のファイルの削除
+    for file in delete_files:
+        os.remove(file)
+    #フォルダーの削除
+    shutil.rmtree(delete_dir)
+
 
 
 
