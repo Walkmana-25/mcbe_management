@@ -1,5 +1,5 @@
 import subprocess
-import lib, exceptions
+import lib, exceptions, server_power
 import datetime
 import time
 import os
@@ -10,7 +10,7 @@ import shutil
 def backup():
     #サーバーが起動しているか判別する
     #サーバーが起動している時の処理
-    if os.path.isfile("/var/games/mcbe/lock/started") == False:
+    if os.path.isfile("/var/games/mcbe/lock/started") == True:
         lib.excute_inside_server("save hold")#bedrock serverで、worldsフォルダーをlockする
         #server側から、保存が終わったことを通知されるまで待つ(timeoutは5回)
         for i in range(6):
@@ -83,7 +83,7 @@ def restore():
             print(f"{user_input_time} is not in list")
     
     #リストアを実行するか聞く
-    print(f"Restore to data as of {user_input_date}-{user_input_time}")
+    print(f"Restore to data as of {user_input_date} {user_input_time}")
     print("Format:yyyy:mm:dd:hh:mm:ss")
     print("Are you sure? y or n")
 
@@ -97,5 +97,22 @@ def restore():
         else:
             print(f"Please enter y or n")
     
+    #worldsの中身をバックアップのやつに入れ替える
+    #サーバーが起動しているか確認する
+    if os.path.isfile("/var/games/mcbe/lock/started") == True:
+        server_power.stop()
+        print("Server stopped")
+
+    print("Worlds Data backup...")
+    backup()#念のためのバックアップ実行
+
+    
+    
+    
+
+
+
+    
+
 
 
