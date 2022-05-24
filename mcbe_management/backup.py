@@ -106,12 +106,21 @@ def restore():
     print("Worlds Data backup...")
     backup()#念のためのバックアップ実行
 
-    #コピーソースの指定
+    #コピーソースの指定(二次元配列)
     restore_source_dir = f"/var/games/mcbe/backup/{user_input_date}/{user_input_time}"
     copy_file_source = [
-        f"/var/games/mcbe/backup/{user_input_date}/allowlist.json",
-        f"/var/games/mcbe/backup/{user_input_date}/permissions.json",
-        f"/var/games/mcbe/backup/{user_input_date}/server.properties"
+        [
+            f"/var/games/mcbe/backup/{user_input_date}/allowlist.json",
+            "allowlist.json"
+        ]
+        [
+            f"/var/games/mcbe/backup/{user_input_date}/permissions.json",
+            "permission.json"
+        ]
+        [
+            f"/var/games/mcbe/backup/{user_input_date}/server.properties",
+            "server.properties"
+        ]
     ]
 
     #削除するフォルダー、ファイルの指定
@@ -129,10 +138,5 @@ def restore():
     #フォルダーの削除
     shutil.rmtree(delete_dir)
 
-
-
-
-    
-
-
+    #ファイルコピーの実行
 
