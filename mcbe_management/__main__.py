@@ -1,7 +1,7 @@
 import subprocess
 import sys
 import fire
-import exceptions, server_power, install
+import exceptions, server_power, install, backup
 
 
 class server_io(object):
@@ -46,6 +46,16 @@ class server_io(object):
             print("Server has already installed.")
         except exceptions.Required_package_does_not_installed:
             print("Google Chrome or Screen is not installed. Please install them.", file=sys.stderr)
+
+    def restore(self):
+        """Restore Server data"""
+        backup.restore()
+
+    def backup(self):
+        """Backup Server data"""
+        backup.backup()
+
+
 def main():
     fire.Fire(server_io)
 
