@@ -4,6 +4,7 @@ import datetime
 import time
 import os
 import shutil
+import sys
 
 
 
@@ -71,7 +72,8 @@ def restore():
     print("Please select the restore target in list")
     print("---------------------")
     for f in files_dir:
-        print(f)
+        if not f == "backup-base":
+           print(f)
     print("---------------------")
 
     #ユーザーの入力がリストに含まれているか確認する
@@ -107,16 +109,16 @@ def restore():
     backup()#念のためのバックアップ実行
 
     #コピーソースの指定(二次元配列)
-    restore_source_dir = f"/var/games/mcbe/backup/{user_input_date}/{user_input_time}"
+    restore_source_dir = f"/var/games/mcbe/backup/{user_input_date}/{user_input_time}/"
     copy_file_source = [
         [
             f"/var/games/mcbe/backup/{user_input_date}/allowlist.json",
             "allowlist.json"
-        ]
+        ],
         [
             f"/var/games/mcbe/backup/{user_input_date}/permissions.json",
             "permission.json"
-        ]
+        ],
         [
             f"/var/games/mcbe/backup/{user_input_date}/server.properties",
             "server.properties"
@@ -134,9 +136,21 @@ def restore():
     #ファイルの削除の実行
     #delete_filesの中のファイルの削除
     for file in delete_files:
-        os.remove(file)
+        try:
+            os.remove(file)
+        except FileNotFoundError:
+            print(f"{file} is not found. Cannot Delete.", file=sys.stderr)
+        
     #フォルダーの削除
     shutil.rmtree(delete_dir)
 
     #ファイルコピーの実行
+    for i in copy_file_source:
+        shutil.copy2(i[0], f"/var/games/mcbe/server/{i[1]}")
 
+    shutil.copytree(restore_source_dir, "/var/games/mcbe/worlds")
+
+    #完了!!!
+    print("Restore Completed!!")
+
+restore()
