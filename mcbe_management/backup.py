@@ -1,5 +1,5 @@
 import subprocess
-import lib, exceptions, server_power
+from mcbe_management import lib, exceptions, server_power
 import datetime
 import time
 import os

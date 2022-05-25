@@ -1,7 +1,7 @@
 import os
 import shutil
 #from mcbe_management import get_update
-import get_update, exceptions
+from mcbe_management import get_update, exceptions
 import urllib.request
 import zipfile
 import subprocess
