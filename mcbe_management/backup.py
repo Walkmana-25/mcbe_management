@@ -153,4 +153,3 @@ def restore():
     #完了!!!
     print("Restore Completed!!")
 
-restore()
