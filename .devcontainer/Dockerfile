@@ -12,5 +12,5 @@ RUN apt install rsync neofetch screen command-not-found wget python3 python-is-p
 WORKDIR /tmp
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 RUN apt install ./google-chrome-stable_current_amd64.deb -y
-RUN pip install -r  /workspaces/mcbe_manegement/requirements.txt
-RUN pip install -e /workspaces/mcbe_manegement
+CMD [ "pip install -r  /workspaces/mcbe_manegement/requirements.txt && pip install -e /workspaces/mcbe_manegement" ] 
+
