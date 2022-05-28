@@ -40,7 +40,7 @@ def get_update_url():
     options.add_argument("--lang=en-US")
     #ここまで
     browser = webdriver.Chrome(chrome_options=options)#chromeを使ってスクレイピング
-    browser.get("https://www.minecraft.net/en-us/download/server/bedrock")#Minecraft bedrock server download pageを開く
+    browser.get("https://www.minecraft.net/ja-jp/download/server/bedrock")#Minecraft bedrock server download pageを開く
     #チェックボックスを押す
     elements = browser.find_elements_by_xpath('/html/body/div/div[1]/div[3]/div/div/div/div[1]/div/div/div/div[1]/div[2]/div/div/div[2]/div[3]/div/label/input') # チェックボックスを取得
     for element in elements:#チェックボックスを全部押す
