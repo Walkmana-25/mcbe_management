@@ -1,0 +1,40 @@
+{
+    "auto_update": false, 
+    "auto_fix": true,
+    "auto_backup": {
+        "enable": false,
+        "week": ["Sunday", "Wednesday"],
+        "hour": ["0", "10", "23"],
+        "min": 0
+    },
+    "auto_restart": {
+        "enable": false,
+        "week": ["Sunday", "Wednesday"],
+        "hour": ["0", "10", "23"],
+        "min": 0
+    },
+    "disocrd_bot":{
+        "enable": false,
+        "token": "xxxxxxxx",
+        "notice_channel_id":"xxxxxxx",
+        "admin_command":{
+            "enable": true,
+            "role_id":"xxxx",
+            "channel_id":"xxxx"
+        },
+        "user_command":{
+            "enable": false,
+            "limited_role":{
+                "enable": false,
+                "role_id": "xxxxx"
+            },
+            "channel_id": "xxxx",
+            "limit_command":{
+                "enable": true,
+                "allow_command": ["time", "gamerule"]
+            }
+        }
+
+    }
+    
+}
