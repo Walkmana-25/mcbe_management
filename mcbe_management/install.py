@@ -35,7 +35,10 @@ def install():
 
     #bedrock serverのインストール
     #/tmp/mcbe_manegementにzipをdlして、そのあと展開して中身を/var/games/mcbe/serverにコピーする
-    lib.server_download()#DLしたサーバーを/tmp/mcbe_manegement/serverに展開
+    url = lib.server_download()#DLしたサーバーを/tmp/mcbe_manegement/serverに展開
+    if url == None:
+        print("Coldn't get minecraft server download link.", file=sys.stderr)
+        exit()
     print("Installing")
     shutil.copytree("/tmp/mcbe_manegement/server","/var/games/mcbe/server")
     #パーミッションの変更
