@@ -1,19 +1,21 @@
+//config file for mcbe_manegement.
+//for detail, please see https://github.com/Walkmana-25/mcbe_management.
 {
     "auto_update": false, 
-    "auto_fix": true,
-    "auto_backup": {
+    "auto_fix": true,//reinstall bedrock server when it crash
+    "auto_backup": {//do not same time with auto restart
         "enable": false,
         "week": ["Sunday", "Wednesday"],
         "hour": ["0", "10", "23"],
         "min": 0
     },
-    "auto_restart": {
+    "auto_restart": {//do not set same time with auto backup
         "enable": false,
         "week": ["Sunday", "Wednesday"],
         "hour": ["0", "10", "23"],
         "min": 0
     },
-    "disocrd_bot":{
+    "disocrd_bot":{//settings for discord bot futures
         "enable": false,
         "token": "xxxxxxxx",
         "notice_channel_id":"xxxxxxx",
