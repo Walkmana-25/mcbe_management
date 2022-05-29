@@ -17,7 +17,9 @@
 		"eamodio.gitlens",
 		"MS-CEINTL.vscode-language-pack-ja",
 		"ms-python.vscode-pylance",
-		"ms-python.python"
+		"ms-python.python",
+		"ritwickdey.LiveServer",
+		"ms-vsliveshare.vsliveshare"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

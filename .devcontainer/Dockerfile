@@ -10,7 +10,7 @@ FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
 RUN apt update && apt upgrade -y
 RUN apt install rsync neofetch screen command-not-found wget python3 python-is-python3 git python3-pip -y
 WORKDIR /tmp
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apt install ./google-chrome-stable_current_amd64.deb -y
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && apt install ./google-chrome-stable_current_amd64.deb -y
+
 
 
