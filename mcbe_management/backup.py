@@ -17,7 +17,7 @@ def backup():
         for i in range(6):
             if i == 5:
                 raise exceptions.server_timeout
-            save_result = lib.excute_inside_server("save resume")
+            save_result = lib.excute_inside_server("save query")
             if "saved" in save_result:
                 break
             time.sleep(1)
