@@ -9,6 +9,11 @@ import sys
 
 
 def backup():
+    #worldsフォルダーが存在しているか確認する
+    if os.path.exists("/var/games/mcbe/server/worlds") == False:
+        print("Worlds Folder is not exists. Please run 'mcbe start' first. ", file=sys.stderr)
+        exit()
+
     #サーバーが起動しているか判別する
     #サーバーが起動している時の処理
     if os.path.isfile("/var/games/mcbe/lock/started") == True:
