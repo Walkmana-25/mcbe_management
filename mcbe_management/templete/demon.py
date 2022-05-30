@@ -18,3 +18,13 @@ auto_backup = config["auto_backup"]
 auto_restart = config["auto_restart"]
 discord_bot = config["discord_bot"]
 
+#TODO auto_updateの設定
+
+#jsonのauto_updateの値を読み取って、cronに書き込む
+if auto_backup["enalbe"] == True:
+    #auto_backupの辞書を変数に変換する
+    week = auto_backup["week"]
+    hour = auto_backup["hour"]
+    minute = auto_backup["min"]
+
+
