@@ -76,6 +76,39 @@ def excute_inside_server(input):
 
     return output
 
+def week_to_cron(input_week):
+    if type(input_week) is list == false:
+        raise exceptions.variable_class_exception()
+
+    cron_week = ""
+    l = len(input_week)
+    j = 1
+    for i in input_week:
+        if i == "Sunday":
+            cron_week += "0"
+        if i == "Monday":
+            cron_week += "1"
+        if i == "Tuesday":
+            cron_week += "2"
+        if i == "Wednesday":
+            cron_week += "3"
+        if i == "Thursday":
+            cron_week += "4"
+        if i == "Friday":
+            cron_week += "5"
+        if i == "Saturday":
+            cron_week += "6" 
+
+        if j != l:
+            j += 1
+            cron_week += ","
+
+    return cron_week
+
+        
+
+
+
   
 
 

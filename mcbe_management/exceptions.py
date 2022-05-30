@@ -17,3 +17,6 @@ class Server_already_installed(Exception):
     pass
 class Server_is_not_running(Exception):
     """サーバーが起動していないときに発生する例外クラス"""
+
+class  variable_class_exception(Exception):
+    """違う変数のクラスのときに発生する例外クラス"""
