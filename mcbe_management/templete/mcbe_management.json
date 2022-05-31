@@ -15,7 +15,7 @@
         "hour": ["0", "10", "23"],
         "min": 0
     },
-    "disocrd_bot":{//settings for discord bot futures
+    "discord_bot":{//settings for discord bot futures
         "enable": false,
         "token": "xxxxxxxx",
         "notice_channel_id":"xxxxxxx",
