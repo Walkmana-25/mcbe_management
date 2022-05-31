@@ -17,10 +17,10 @@ exist_config = os.path.exits("/etc/mcbe_management.json")
 exist_script = os.path.exists("/var/games/mcbe/script.json")
 if exist_config == False:
     with open("/etc/mcbe_management.json", "x") as f:
-        f.write(pkgutil.get_data("mcbe_management", "templete/mcbe_management.json"))
+        f.write(pkgutil.get_data("mcbe_management", "templete/mcbe_management.json").decode("utf-8"))
 if exist_script == False:
     with open("/var/games/mcbe/script.json", "x") as f:
-        f.write(pkgutil.get_data("mcbe_management", "templete/script.json"))
+        f.write(pkgutil.get_data("mcbe_management", "templete/script.json").decode("utf-8"))
 
 
 #jsonを読み込んで変数に格納する

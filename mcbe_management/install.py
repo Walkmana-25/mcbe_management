@@ -4,6 +4,7 @@ import os
 from mcbe_management import lib, exceptions#for dev
 import sys
 import shutil
+import pkgutil
 
 
 
@@ -32,6 +33,13 @@ def install():
     #/var/games/mcbe/を作成
     os.makedirs("/var/games/mcbe/lock", exist_ok=True)
 
+    #configとdemonをコピーする
+    with open("/etc/mcbe_management.json", "x") as f:
+        f.write(pkgutil.get_data("mcbe_management", "templete/mcbe_management.json").decode("utf-8"))
+    with open("/var/games/mcbe/script.json", "x") as f:
+        f.write(pkgutil.get_data("mcbe_management", "templete/script.json").decode("utf-8"))
+    with open("/var/games/mcbe/demon.py", "x") as f:
+        f.write(pkgutil.get_data("mcbe_management", "templete/demon.py").decode("utf-8"))
 
     #bedrock serverのインストール
     #/tmp/mcbe_manegementにzipをdlして、そのあと展開して中身を/var/games/mcbe/serverにコピーする
