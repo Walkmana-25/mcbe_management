@@ -113,9 +113,34 @@ def week_to_cron(input_week):
     return cron_week
 
 
+def hour_to_cron(input_hour):
+    if type(input_hour) is list == False:
+        raise exceptions.variable_class_exception(("hour format error"))
+    
+    cron_hour = ""
+    l = len(input_hour)
+    j = 1
 
+    for i in input_hour:
+        try:
+            k = int(i)
+        except ValueError():
+            raise exceptions.config_is_wrong("hour format error")
+        if k >= 0 and k <= 24:
+            pass
+        else:
+            raise exceptions.config_is_wrong("hour format error")
+        cron_hour += i
 
-  
+        if j != l:
+            j += 1
+            cron_hour += ","
+
+    #cron_hourが空白になったときにエラーが吐くようにする
+    if cron_hour == "":
+        raise exceptions.config_is_wrong("hour format error")
+
+    return cron_hour
 
 
 
