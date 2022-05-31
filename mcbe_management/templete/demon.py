@@ -104,4 +104,6 @@ if auto_backup["enable"] == True or auto_restart["enable"] == True:
             with open("/etc/cron.d/mcbe", "w") as f:
                 f.write(cron)
 
-
+#auto_updateとauto_restartが両方falseのときに、削除する
+if auto_backup["enable"] == False and auto_restart["enable"] == False and os.path.exists("/etc/cron.d/mcbe") == True:
+     os.remove("/etc/cron.d/mcbe")
