@@ -5,6 +5,7 @@ import json
 import os
 import pkgutil
 import re
+import time
 
 #初期確認を行う
 #serverがインストールされているか確認
@@ -114,4 +115,14 @@ if auto_backup["enable"] == False and auto_restart["enable"] == False and os.pat
 with open("/var/games/mcbe/lock/demon_started", "w") as f:
     f.write("")
     
+#常時処理ここから
+#================================================================
+while True:
+    time.sleep(5)#5秒ごとに実行する
+    with open("/var/games/mcbe/server/output.txt", "r") as f:
+        data = f.read()
+    if data in "crash" or data in "Crash":
+        print("Server Crashed", file=sys.stderr)
 
+
+#================================================================
