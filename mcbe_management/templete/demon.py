@@ -66,5 +66,21 @@ if auto_backup["enable"] == True or auto_restart["enable"] == True:
         cron += f"{backup_minute} {backup_hour} * * {backup_week} root mcbe backup\n"
     #auto_restartの書き込みをする準備
     if auto_restart["enable"] == True:
-        cron += f"{restart_minute} {restart_hour} * * {restart_week} root mcbe backup\n"
+        cron += f"{restart_minute} {restart_hour} * * {restart_week} root mcbe restart\n"
+
+    #現在のcronを読み込む
+    #ファイルが存在しているか確認する
+    if os.path.exists("/etc/cron.d/mcbe") == False:
+        with open("/etc/cron.d/mcbe", "w") as f:
+            f.write(cron)
+    else:
+        #存在していたため、現在のファイルを読み込む
+        with open("/etc/cron.d/mcbe", "r") as f:
+            cron_before = f.read()
+
+        #ファイルの内容を比較する
+        if cron_before != cron:
+            with open("/etc/cron.d/mcbe", "w") as f:
+                f.write(cron)
+
 
