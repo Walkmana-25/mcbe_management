@@ -101,7 +101,6 @@ if auto_backup["enable"] == True or auto_restart["enable"] == True:
         with open("/etc/cron.d/mcbe", "w") as f:
             f.write(cron)
     else:
-        #存在していたため、現在のファイルを読み込む
         with open("/etc/cron.d/mcbe", "r") as f:
             cron_before = f.read()
 
@@ -131,7 +130,9 @@ while True:
     if data in "crash" or data in "Crash":
         print("Server Crashed", file=sys.stderr)
 
-    
-
+    #/var/games/mcbe/lock/demon_stopが存在したらdemonを止める処理を追加
+    if os.path.exists("/var/games/mcbe/lock/demon_stop") == True:
+        os.remove("/var/games/mcbe/lock/demon_started")
+        sys.exit()
 
 #================================================================
