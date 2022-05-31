@@ -4,6 +4,7 @@ import sys
 import json
 import os
 import pkgutil
+import re
 
 #初期確認を行う
 #serverがインストールされているか確認
@@ -13,7 +14,7 @@ if lib.check_installed() == False:
 
 #/etc/mcbe_management.jsonと/var/games/mcbe/script.jsonが存在するか確認 
 #存在しなかったらコピーする
-exist_config = os.path.exits("/etc/mcbe_management.json")
+exist_config = os.path.exists("/etc/mcbe_management.json")
 exist_script = os.path.exists("/var/games/mcbe/script.json")
 if exist_config == False:
     with open("/etc/mcbe_management.json", "x") as f:
@@ -25,7 +26,9 @@ if exist_script == False:
 
 #jsonを読み込んで変数に格納する
 with open("/etc/mcbe_management.json", "r") as load_config_json:
-    config = json.load(load_config_json)
+    text = load_config_json.read()
+re_text = re.sub(r'/\*[\s\S]*?\*/|//.*', '', text)
+config = json.loads(re_text)
 
 auto_update = config["auto_update"]
 auto_fix = config["auto_fix"]
@@ -78,7 +81,7 @@ if auto_restart["enable"] == True:
 #crontabの書き込み
 if auto_backup["enable"] == True or auto_restart["enable"] == True:
     #書き込む内容の準備
-    cron = "#/etc/cron.d/mcbe: crontab entries for the mcbe_management\nSHELL=/bin/bash\nsh\nPATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin\n"
+    cron = "#/etc/cron.d/mcbe: crontab entries for the mcbe_management\nSHELL=/bin/bash\nPATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin\nMAILTO=root\nHOME=/\n"
     #auto_backupの書き込みをする準備
     if auto_backup["enable"] == True:
         cron += f"{backup_minute} {backup_hour} * * {backup_week} root mcbe backup\n"
