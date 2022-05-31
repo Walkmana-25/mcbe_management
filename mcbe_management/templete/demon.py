@@ -115,7 +115,8 @@ if auto_backup["enable"] == False and auto_restart["enable"] == False and os.pat
      os.remove("/etc/cron.d/mcbe")
 
 #初期確認終わり
-
+#serverを起動する
+server_power.start()
 
 #demonが起動していることを示すファイルを作る
 with open("/var/games/mcbe/lock/demon_started", "w") as f:
@@ -129,6 +130,8 @@ while True:
         data = f.read()
     if data in "crash" or data in "Crash":
         print("Server Crashed", file=sys.stderr)
+
+    
 
 
 #================================================================
