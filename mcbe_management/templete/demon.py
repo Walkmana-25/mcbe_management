@@ -1,3 +1,4 @@
+from attr import field
 from mcbe_management import exceptions, server_power, lib
 import sys
 import json
@@ -23,7 +24,7 @@ if exist_script == False:
 
 
 #jsonを読み込んで変数に格納する
-with open("/etc/mcbe_manegement.json", "r") as load_config_json:
+with open("/etc/mcbe_management.json", "r") as load_config_json:
     config = json.load(load_config_json)
 
 auto_update = config["auto_update"]
@@ -42,9 +43,18 @@ if auto_backup["enable"] == True:
     backup_minute = auto_backup["min"]
 
     #weekを数字に変換する
-    backup_week = lib.week_to_cron(backup_week)
-    #hourを数字に変換する\
-    backup_hour = lib.hour_to_cron(backup_hour)
+    try:
+        backup_week = lib.week_to_cron(backup_week)
+    except exceptions.config_is_wrong:
+        print("Error. week in auto_backup is wrong. Please edit /etc/mcbe_management", file=sys.stderr)
+        sys.exit(1)
+    
+    #hourを数字に変換する
+    try:
+        backup_hour = lib.hour_to_cron(backup_hour)
+    except exceptions.config_is_wrong:
+        print("Error. hour in auto_backup is wrong. Please edit /etc/mcbe_management", file=sys.stderr) 
+        sys.exit(1) 
 
 if auto_restart["enable"] == True:
     #auto_backupの辞書を変数に変換する
@@ -53,9 +63,17 @@ if auto_restart["enable"] == True:
     restart_minute = auto_restart["min"]
 
     #weekを数字に変換する
-    restart_week = lib.week_to_cron(backup_week)
-    #hourを数字に変換する\
-    restart_hour = lib.hour_to_cron(backup_hour)
+    try:
+        restart_week = lib.week_to_cron(restart_week)
+    except exceptions.config_is_wrong:
+        print("Error. week in auto_restart is wrong. Please edit /etc/mcbe_management", file=sys.stderr)    
+        sys.exit(1)
+    #hourを数字に変換する
+    try:
+        restart_hour = lib.hour_to_cron(restart_hour)
+    except exceptions.config_is_wrong:
+        print("Error. hour in auto_restart is wrong. Please edit /etc/mcbe_management", file=sys.stderr)    
+        sys.exit(1)
 
 #crontabの書き込み
 if auto_backup["enable"] == True or auto_restart["enable"] == True:
