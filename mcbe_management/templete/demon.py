@@ -46,4 +46,13 @@ if auto_backup["enable"] == True:
     #hourを数字に変換する\
     backup_hour = lib.hour_to_cron(backup_hour)
 
+if auto_restart["enable"] == True:
+    #auto_backupの辞書を変数に変換する
+    restart_week = auto_restart["week"]
+    restart_hour = auto_restart["hour"]
+    restart_minute = auto_restart["min"]
 
+    #weekを数字に変換する
+    restart_week = lib.week_to_cron(backup_week)
+    #hourを数字に変換する\
+    restart_hour = lib.hour_to_cron(backup_hour)
