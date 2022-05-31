@@ -78,35 +78,40 @@ def excute_inside_server(input):
     return output
 
 def week_to_cron(input_week):
-    if type(input_week) is list == false:
-        raise exceptions.variable_class_exception()
+    if type(input_week) is list == False:
+        raise exceptions.variable_class_exception("week format error")
 
     cron_week = ""
     l = len(input_week)
     j = 1
+    
     for i in input_week:
         if i == "Sunday":
             cron_week += "0"
-        if i == "Monday":
+        elif i == "Monday":
             cron_week += "1"
-        if i == "Tuesday":
+        elif i == "Tuesday":
             cron_week += "2"
-        if i == "Wednesday":
+        elif i == "Wednesday":
             cron_week += "3"
-        if i == "Thursday":
+        elif i == "Thursday":
             cron_week += "4"
-        if i == "Friday":
+        elif i == "Friday":
             cron_week += "5"
-        if i == "Saturday":
-            cron_week += "6" 
+        elif i == "Saturday":
+            cron_week += "6"
+        else:
+            raise exceptions.config_is_wrong()
 
         if j != l:
             j += 1
             cron_week += ","
+    #cron_weekが空白になったときにエラーを吐くようにする
+    if cron_week == "":
+        raise exceptions.config_is_wrong("week format error")
 
     return cron_week
 
-        
 
 
 

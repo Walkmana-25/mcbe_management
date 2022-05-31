@@ -20,3 +20,6 @@ class Server_is_not_running(Exception):
 
 class  variable_class_exception(Exception):
     """違う変数のクラスのときに発生する例外クラス"""
+
+class config_is_wrong(Exception):
+    """configのフォーマットが間違っているときに発生する例外クラス"""
