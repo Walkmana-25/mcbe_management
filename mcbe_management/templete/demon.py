@@ -107,3 +107,11 @@ if auto_backup["enable"] == True or auto_restart["enable"] == True:
 #auto_updateとauto_restartが両方falseのときに、削除する
 if auto_backup["enable"] == False and auto_restart["enable"] == False and os.path.exists("/etc/cron.d/mcbe") == True:
      os.remove("/etc/cron.d/mcbe")
+
+#初期確認終わり
+
+#demonが起動していることを示すファイルを作る
+with open("/var/games/mcbe/lock/demon_started", "w") as f:
+    f.write("")
+    
+
