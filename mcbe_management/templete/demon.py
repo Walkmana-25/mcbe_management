@@ -13,6 +13,11 @@ if lib.check_installed() == False:
     print("Server is not installed. Please run 'mcbe install'.", file=sys.stderr)
     sys.exit(1)
 
+#すでにserverが起動しているかどうか確認
+if lib.check_server_started() == True:
+    print("Server is already started")
+    sys.exit(0)
+
 #/etc/mcbe_management.jsonと/var/games/mcbe/script.jsonが存在するか確認 
 #存在しなかったらコピーする
 exist_config = os.path.exists("/etc/mcbe_management.json")
@@ -110,6 +115,7 @@ if auto_backup["enable"] == False and auto_restart["enable"] == False and os.pat
      os.remove("/etc/cron.d/mcbe")
 
 #初期確認終わり
+
 
 #demonが起動していることを示すファイルを作る
 with open("/var/games/mcbe/lock/demon_started", "w") as f:
