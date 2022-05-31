@@ -7,7 +7,7 @@ from mcbe_management import exceptions, lib
 #minecraft serverが正常に起動したか確かめる(output.txtからserver startedが出力されて、3秒いないにcrashが表示されないかどうか)
 
 
-def start(option):
+def start(option=None):
     #最低限必要なファイルが存在しているか確認
     #bedrock_server,server.properties,worldsフォルダ
     bedrock = os.path.isfile("/var/games/mcbe/server/bedrock_server")
@@ -92,7 +92,7 @@ def stop():
             break
         print("Waiting for stopping demon....")
         time.sleep(1)
-    os.remove("/var/games/mcbe/lock/demon_started")
+    os.remove("/var/games/mcbe/lock/demon_stop")
 
     return "Server Stoped"
 
