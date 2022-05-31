@@ -13,11 +13,11 @@ if lib.check_installed() == False:
 #/etc/mcbe_management.jsonと/var/games/mcbe/script.jsonが存在するか確認 
 #存在しなかったらコピーする
 exist_config = os.path.exits("/etc/mcbe_management.json")
-exsit_script = os.path.exists("/var/games/mcbe/script.json")
-if exist_config == false:
+exist_script = os.path.exists("/var/games/mcbe/script.json")
+if exist_config == False:
     with open("/etc/mcbe_management.json", "x") as f:
         f.write(pkgutil.get_data("mcbe_management", "templete/mcbe_management.json"))
-if exist_script == false:
+if exist_script == False:
     with open("/var/games/mcbe/script.json", "x") as f:
         f.write(pkgutil.get_data("mcbe_management", "templete/script.json"))
 
@@ -56,3 +56,15 @@ if auto_restart["enable"] == True:
     restart_week = lib.week_to_cron(backup_week)
     #hourを数字に変換する\
     restart_hour = lib.hour_to_cron(backup_hour)
+
+#crontabの書き込み
+if auto_backup["enable"] == True or auto_restart["enable"] == True:
+    #書き込む内容の準備
+    cron = "#/etc/cron.d/mcbe: crontab entries for the mcbe_management\nSHELL=/bin/bash\nsh\nPATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin\n"
+    #auto_backupの書き込みをする準備
+    if auto_backup["enable"] == True:
+        cron += f"{backup_minute} {backup_hour} * * {backup_week} root mcbe backup\n"
+    #auto_restartの書き込みをする準備
+    if auto_restart["enable"] == True:
+        cron += f"{restart_minute} {restart_hour} * * {restart_week} root mcbe backup\n"
+
