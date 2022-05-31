@@ -61,7 +61,10 @@ def stop():
     #サーバーが起動しているか確かめる
     if lib.check_server_started() == False:
         return "Server is not running"
-    
+    #demonに終了信号を送る
+    with open("/var/games/mcbe/lock/demon_stop","w") as f:
+        f.write("")
+
     #サーバー停止信号を送る
     args = (r"screen -S mcbe_server -X stuff 'stop \n'")
     result = subprocess.run(args, shell=True)
@@ -83,6 +86,13 @@ def stop():
     #lockファイルの削除
     os.remove("/var/games/mcbe/lock/started")
 
-    
+    #demonが終了しているか確認する
+    while True:
+        if os.path.exists("/var/games/mcbe/lock/demon_started") == False:
+            break
+        print("Waiting for stopping demon....")
+        time.sleep(1)
+    os.remove("/var/games/mcbe/lock/demon_started")
+
     return "Server Stoped"
 
