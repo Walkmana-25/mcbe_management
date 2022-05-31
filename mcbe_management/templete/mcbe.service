@@ -1,0 +1,13 @@
+[Unit]
+Description=Minecraft Bedrock Server Management Service
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=python3 /var/games/mcbe/demon.py
+ExecStop=python3 /var/games/mcbe/stop.py
+User=root
+Group=root
+RemainAfterExit=yes
+[Install]
+WantedBy=multi-user.target
