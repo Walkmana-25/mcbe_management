@@ -26,6 +26,7 @@ def server_download():#MCBE ServerをDLして解凍する
     print("Extracting")
     with zipfile.ZipFile("/tmp/mcbe_manegement/server.zip", "r") as f:
         f.extractall("/tmp/mcbe_manegement/server")
+    return mc_url
 
 
 def check_server_started():

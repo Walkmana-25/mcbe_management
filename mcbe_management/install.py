@@ -38,7 +38,7 @@ def install():
     url = lib.server_download()#DLしたサーバーを/tmp/mcbe_manegement/serverに展開
     if url == None:
         print("Coldn't get minecraft server download link.", file=sys.stderr)
-        exit()
+        os._exit(1)
     print("Installing")
     shutil.copytree("/tmp/mcbe_manegement/server","/var/games/mcbe/server")
     #パーミッションの変更
