@@ -37,9 +37,13 @@ discord_bot = config["discord_bot"]
 #jsonのauto_updateの値を読み取って、cronに書き込む
 if auto_backup["enable"] == True:
     #auto_backupの辞書を変数に変換する
-    week = auto_backup["week"]
-    hour = auto_backup["hour"]
-    minute = auto_backup["min"]
+    backup_week = auto_backup["week"]
+    backup_hour = auto_backup["hour"]
+    backup_minute = auto_backup["min"]
 
     #weekを数字に変換する
-    
+    backup_week = lib.week_to_cron(backup_week)
+    #hourを数字に変換する\
+    backup_hour = lib.hour_to_cron(backup_hour)
+
+
