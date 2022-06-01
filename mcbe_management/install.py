@@ -5,6 +5,7 @@ from mcbe_management import lib, exceptions#for dev
 import sys
 import shutil
 import pkgutil
+import json
 
 
 
@@ -41,6 +42,10 @@ def install():
     with open("/var/games/mcbe/demon.py", "x") as f:
         f.write(pkgutil.get_data("mcbe_management", "templete/demon.py").decode("utf-8"))
 
+    #jsonファイルを読み込む
+    with open("/var/games/mcbe/script.json", "r") as f:
+        settings = json.loads(f)
+
     #bedrock serverのインストール
     #/tmp/mcbe_manegementにzipをdlして、そのあと展開して中身を/var/games/mcbe/serverにコピーする
     url = lib.server_download()#DLしたサーバーを/tmp/mcbe_manegement/serverに展開
@@ -64,6 +69,12 @@ def install():
     f = open("/var/games/mcbe/server/output.txt", "w")
     f.write("")
     f.close()
+
+    #jsonファイルにVersion情報を書き込む
+    settings["mc_version"] = lib.url_to_version(url)
+    write_json = json.dumps(settings)
+    with open("/var/games/mcbe/script.py", "w") as f:
+        json.dump(write_json, f, indent=4)
 
 
     print("Please edit /var/games/mcbe/server/server.properties")
