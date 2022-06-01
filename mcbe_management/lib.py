@@ -142,5 +142,17 @@ def hour_to_cron(input_hour):
 
     return cron_hour
 
-
-
+def url_to_version(url):
+    url_list = url.split("/")
+    #urlからversionがあるところを抜き出す
+    r1= str(url_list[len(url_list) - 1])
+    #-の以前を消す
+    r2 = r1.split("-")
+    r3 = str(r2[len(r2) - 1])
+    #bedrock-serverとzipを削除する
+    r4 = r3.replace("bedrock-server", "")
+    r5 = r4.replace("zip", "")
+    #末尾の.を削除する
+    mc_version = r5.strip(".")
+    
+    return mc_version
