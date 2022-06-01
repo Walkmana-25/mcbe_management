@@ -23,3 +23,6 @@ class  variable_class_exception(Exception):
 
 class config_is_wrong(Exception):
     """configのフォーマットが間違っているときに発生する例外クラス"""
+
+class server_is_started(Exception):
+    """サーバーが停止していることが必要な処理で、サーバーが停止していなかったときに発生する例外クラス"""

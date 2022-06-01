@@ -7,21 +7,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome import service
 import chromedriver_binary
 import time
+from mcbe_management import lib, exceptions
 
-
-#def get_update_url():
-#    option = Options()
-#    option.headless = True
-#    geckodriver = service.Service(executable_path="/var/games/mcbe/lib/geckodriver")
-#    browser = webdriver.Firefox(service=geckodriver, options=option)#firefoxを使ってスクレイピング
-#    browser.get("https://www.minecraft.net/en-us/download/server/bedrock")#Minecraft bedrock server download pageを開く
-#    #チェックボックスを押す
-#    elements = browser.find_element_by_class_name("form-check-input") # チェックボックスを取得
-#    for element in elements:#チェックボックスを全部押す
-#        element.click()
-#    elements = browser.find_element_by_xpath('//a[@aria-label="Download Ubuntu Server software for Ubuntu"]')#download linkを取得
-#    url = elements.get_attribute("href")
-#    return url
 
 def get_update_url():
     #ヘッドレスモードの設定
@@ -53,6 +40,11 @@ def get_update_url():
     
     browser.quit()
     
-
-
+def server_update(manual=True):
+    if manual == True:
+        print("Update Minecraft Server")
+    #Serverが起動しているか確認
+    if lib.check_server_started() == True:
+        raise exceptions.server_is_started()
+    
 
