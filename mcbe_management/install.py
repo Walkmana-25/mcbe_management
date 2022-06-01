@@ -41,6 +41,10 @@ def install():
         f.write(pkgutil.get_data("mcbe_management", "templete/script.json").decode("utf-8"))
     with open("/var/games/mcbe/demon.py", "x") as f:
         f.write(pkgutil.get_data("mcbe_management", "templete/demon.py").decode("utf-8"))
+    with open("/var/games/mcbe/stop.py", "x"):
+        f.write(pkgutil.get_data("mcbe_management", "templete/stop.py").decode("utf-8"))
+    with open("/usr/lib/systemd/system/mcbe.service", "x"):
+        f.write(pkgutil.get_data("mcbe_management", "templete/mcbe_service").decode("utf-8"))
 
     #jsonファイルを読み込む
     with open("/var/games/mcbe/script.json", "r") as f:
