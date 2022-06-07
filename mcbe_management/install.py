@@ -35,20 +35,22 @@ def install():
     os.makedirs("/var/games/mcbe/lock", exist_ok=True)
 
     #configとdemonをコピーする
-    with open("/etc/mcbe_management.json", "x") as f:
-        f.write(pkgutil.get_data("mcbe_management", "templete/mcbe_management.json").decode("utf-8"))
-    with open("/var/games/mcbe/script.json", "x") as f:
-        f.write(pkgutil.get_data("mcbe_management", "templete/script.json").decode("utf-8"))
-    with open("/var/games/mcbe/demon.py", "x") as f:
-        f.write(pkgutil.get_data("mcbe_management", "templete/demon.py").decode("utf-8"))
-    with open("/var/games/mcbe/stop.py", "x"):
-        f.write(pkgutil.get_data("mcbe_management", "templete/stop.py").decode("utf-8"))
-    with open("/usr/lib/systemd/system/mcbe.service", "x"):
-        f.write(pkgutil.get_data("mcbe_management", "templete/mcbe_service").decode("utf-8"))
+    if lib.check_installed() == False:
+
+        with open("/etc/mcbe_management.json", "x") as f:
+            f.write(pkgutil.get_data("mcbe_management", "templete/mcbe_management.json").decode("utf-8"))
+        with open("/var/games/mcbe/script.json", "x") as f:
+            f.write(pkgutil.get_data("mcbe_management", "templete/script.json").decode("utf-8"))
+        with open("/var/games/mcbe/demon.py", "x") as f:
+            f.write(pkgutil.get_data("mcbe_management", "templete/demon.py").decode("utf-8"))
+        with open("/var/games/mcbe/stop.py", "x") as f:
+            f.write(pkgutil.get_data("mcbe_management", "templete/stop.py").decode("utf-8"))
+        with open("/usr/lib/systemd/system/mcbe.service", "x") as f:
+            f.write(pkgutil.get_data("mcbe_management", "templete/mcbe.service").decode("utf-8"))
 
     #jsonファイルを読み込む
     with open("/var/games/mcbe/script.json", "r") as f:
-        settings = json.loads(f)
+        settings = json.loads(f.read())
 
     #bedrock serverのインストール
     #/tmp/mcbe_manegementにzipをdlして、そのあと展開して中身を/var/games/mcbe/serverにコピーする
@@ -77,7 +79,7 @@ def install():
     #jsonファイルにVersion情報を書き込む
     settings["mc_version"] = lib.url_to_version(url)
     write_json = json.dumps(settings)
-    with open("/var/games/mcbe/script.py", "w") as f:
+    with open("/var/games/mcbe/script.json", "w") as f:
         json.dump(write_json, f, indent=4)
 
 
