@@ -10,14 +10,20 @@ import hashlib
 
 def check_installed():#インストール済みか判別
     """サーバーがインストール済みか判別"""
-    return os.path.isfile("/var/games/mcbe/lock/installed")
+    if os.path.isfile("/var/games/mcbe/lock/installed") == True:
+        return True
+    else:
+        return False
 
-def server_download():#MCBE ServerをDLして解凍する
+def server_download(url=None):#MCBE ServerをDLして解凍する
     """MCBE ServerをDLして解凍するよ"""
         
     os.makedirs("/tmp/mcbe_manegement", exist_ok=True)
     print("Downloading...")
-    mc_url = get_update.get_update_url()
+    if url == None:
+        mc_url = get_update.get_update_url()
+    else:
+        mc_url = url
         #zipファイルの準備
     f = open("/tmp/mcbe_manegement/server.zip", "w")
     f.write("")

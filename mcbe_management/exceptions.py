@@ -26,3 +26,8 @@ class config_is_wrong(Exception):
 
 class server_is_started(Exception):
     """サーバーが停止していることが必要な処理で、サーバーが停止していなかったときに発生する例外クラス"""
+
+class get_update_url_failed(Exception):
+    """URLを取得に失敗したときに発生する例外クラス"""
+class server_is_not_installed(Exception):
+    """Serverがインストールされていないときに発生する例外クラス"""
