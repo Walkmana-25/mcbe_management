@@ -1,5 +1,5 @@
 from attr import field
-from mcbe_management import exceptions, server_power, lib
+from mcbe_management import exceptions, server_power, lib, update
 import sys
 import json
 import os
@@ -42,7 +42,9 @@ auto_backup = config["auto_backup"]
 auto_restart = config["auto_restart"]
 discord_bot = config["discord_bot"]
 
-#TODO auto_updateの設定
+# auto_updateの設定
+if auto_update == True:
+    update.server_update(manual=False)
 
 #jsonのauto_updateの値を読み取って、cronに書き込む
 if auto_backup["enable"] == True:
@@ -109,7 +111,7 @@ if auto_backup["enable"] == True or auto_restart["enable"] == True:
             with open("/etc/cron.d/mcbe", "w") as f:
                 f.write(cron)
 
-#auto_updateとauto_restartが両方falseのときに、削除する
+#auto_backupとauto_restartが両方falseのときに、削除する
 if auto_backup["enable"] == False and auto_restart["enable"] == False and os.path.exists("/etc/cron.d/mcbe") == True:
      os.remove("/etc/cron.d/mcbe")
 
@@ -129,6 +131,7 @@ while True:
         data = f.read()
     if data in "crash" or data in "Crash":
         print("Server Crashed", file=sys.stderr)
+        sys.exit(1)
 
     #/var/games/mcbe/lock/demon_stopが存在したらdemonを止める処理を追加
     if os.path.exists("/var/games/mcbe/lock/demon_stop") == True:
