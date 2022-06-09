@@ -1,4 +1,3 @@
-from attr import field
 from mcbe_management import exceptions, server_power, lib, update
 import sys
 import json
