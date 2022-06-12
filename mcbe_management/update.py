@@ -16,8 +16,13 @@ def server_update(manual=True, force=False):
     url = get_update.get_update_url()
     version = lib.url_to_version(url)
     #jsonから現在のversionを読み込む
+    setting = ""
     with open("/var/games/mcbe/script.json") as f:
         settings = json.load(f)
+    #json.loadがstrを返したら、dicrionaryに変換する
+    if type(settings) is str:
+        setting = eval(setting)
+    
     current_version = settings["mc_version"]
 
     #versionを比較する
@@ -82,5 +87,3 @@ def server_update(manual=True, force=False):
 
     else:
         return "Update is not needed."
-
-print(server_update(force=True))
