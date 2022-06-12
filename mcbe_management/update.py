@@ -16,6 +16,7 @@ def server_update(manual=True, force=False):
     url = get_update.get_update_url()
     version = lib.url_to_version(url)
     #jsonから現在のversionを読み込む
+    setting = ""
     with open("/var/games/mcbe/script.json") as f:
         settings = json.load(f)
     #json.loadがstrを返したら、dicrionaryに変換する
