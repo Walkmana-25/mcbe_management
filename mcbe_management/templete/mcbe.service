@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/python/bin/python3 /var/games/mcbe/demon.py
-ExecStop=/usr/local/python/binpython3 /var/games/mcbe/stop.py
+ExecStart=$python_dir /var/games/mcbe/demon.py
+ExecStop=$python_dir /var/games/mcbe/stop.py
 Restart on-failure
 User=root
 Group=root

@@ -6,6 +6,7 @@ import sys
 import shutil
 import pkgutil
 import json
+import subprocess
 
 
 
@@ -45,8 +46,16 @@ def install():
             f.write(pkgutil.get_data("mcbe_management", "templete/demon.py").decode("utf-8"))
         with open("/var/games/mcbe/stop.py", "x") as f:
             f.write(pkgutil.get_data("mcbe_management", "templete/stop.py").decode("utf-8"))
-        with open("/usr/lib/systemd/system/mcbe.service", "x") as f:
-            f.write(pkgutil.get_data("mcbe_management", "templete/mcbe.service").decode("utf-8"))
+
+    #Serviceを作成する
+    #python3のパスを取得する
+    python_path = (subprocess.run(["which", "python3"],capture_output=True).stdout).decode("utf-8")
+
+    #書き込む
+    service = pkgutil.get_data("mcbe_management","templete/mcbe.service").decode("utf-8")
+    service = service.replace("$python_dir", python_path)
+    with open("/etc/systemd/system/mcbe.service", "x") as f:
+        f.write(service)
 
     #jsonファイルを読み込む
     with open("/var/games/mcbe/script.json", "r") as f:
@@ -89,7 +98,7 @@ def install():
 
 
 
-
+install()
 
 
 
