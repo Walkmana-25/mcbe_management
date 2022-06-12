@@ -87,5 +87,3 @@ def server_update(manual=True, force=False):
 
     else:
         return "Update is not needed."
-
-print(server_update(force=True))
