@@ -18,6 +18,10 @@ def server_update(manual=True, force=False):
     #jsonから現在のversionを読み込む
     with open("/var/games/mcbe/script.json") as f:
         settings = json.load(f)
+    #json.loadがstrを返したら、dicrionaryに変換する
+    if type(settings) is str:
+        setting = eval(setting)
+    
     current_version = settings["mc_version"]
 
     #versionを比較する
