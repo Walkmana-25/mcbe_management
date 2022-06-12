@@ -95,11 +95,3 @@ def install():
     print("Please edit /var/games/mcbe/server/server.properties")
     print("After, You can start server with mcbe start")
 
-
-
-
-install()
-
-
-
-
