@@ -50,6 +50,8 @@ def install():
     #Serviceを作成する
     #python3のパスを取得する
     python_path = (subprocess.run(["which", "python3"],capture_output=True).stdout).decode("utf-8")
+    #改行を削除する
+    python_path = python_path.replace("\n", "")
 
     #書き込む
     service = pkgutil.get_data("mcbe_management","templete/mcbe.service").decode("utf-8")
