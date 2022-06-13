@@ -2,7 +2,7 @@ import subprocess
 import sys
 import fire
 from mcbe_management import exceptions, server_power, install, backup
-
+import subprocess
 
 
 class server_io(object):
@@ -58,6 +58,13 @@ class server_io(object):
 
 
 def main():
+    #rootユーザーで実行しているか確かめる
+    whoami = (subprocess.run(["whoami"], capture_output=True).stdout).decode("utf-8")
+    whoami = whoami.replace("\n", "") #改行を除去する
+    if whoami != "root":
+        print("Please run as root.")
+        sys.exit(1)
+
     fire.Fire(server_io)
 
 
