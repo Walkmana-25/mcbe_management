@@ -16,6 +16,7 @@ if os.path.exists("/etc/mcbe_management.json") == True:
 os.makedirs("/var/log/mcbe_management", exist_ok=True)
 #loggerの生成
 logger = getLogger("mcbe")
+logger.setLevel(DEBUG)
 
 #Logのフォーマットの設定
 handler_format = Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
