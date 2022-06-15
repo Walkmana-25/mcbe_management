@@ -1,14 +1,22 @@
+from logging import getLogger
+from mcbe_management import log
+logger = getLogger("mcbe").getChild("exception")
 class mcbe_exception(Exception):
-    def __init__(self, arg=""):
-        self.arg = arg
+    def __init__(self, *args):
+        self.arg = args
 
 class Required_file_does_not_exist(mcbe_exception):
     """必要なファイルが存在していないときに発生させる例外クラス"""
-    pass
+    def __init__(self, *args):
+        self.arg = args
+        logger.exception(f"{args}:Not Found.")
+    def __str__(self):
+        return f"{self.args}:Not Found."
 
 class screen_already_exists(mcbe_exception):
     """screenがすでに存在しているときに発生させる例外クラス"""
-    pass
+    def __init__(self):
+        logger.exception("screen already exists")
 
 class server_timeout(mcbe_exception):
     """サーバーが規定時間以内に起動しないときに発生する例外クラス"""
