@@ -42,6 +42,9 @@ file_handler.setFormatter(handler_format)
 logger.addHandler(stream_handler)
 logger.addHandler(file_handler)
 
+#Debug Modeが有効の時に画面に出力する
+logger.debug("Debug Mode Enabled")
+
 #loggerのテスト
 if __name__ == "__main__":
     logger.critical("critical test")
