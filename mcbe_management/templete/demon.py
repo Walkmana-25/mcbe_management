@@ -1,10 +1,20 @@
-from mcbe_management import exceptions, server_power, lib, update
+from mcbe_management import exceptions, server_power, lib, update, log
 import sys
 import json
 import os
 import pkgutil
 import re
 import time
+from logging import getLogger, StreamHandler, DEBUG, INFO
+#loggerの設定
+logger = getLogger("mcbe").getChild("daemon")
+#daemonは、stream handlerでinfoも出力する
+stream_handler = log.stream_handler
+if log.debug_mode == True:
+    stream_handler.setLevel(DEBUG)
+else:
+    stream_handler.setLevel(INFO)
+logger.addHandler(stream_handler)
 
 #初期確認を行う
 #serverがインストールされているか確認
