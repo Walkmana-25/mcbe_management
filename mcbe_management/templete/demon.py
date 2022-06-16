@@ -25,8 +25,7 @@ if lib.check_installed() == False:
 
 #すでにserverが起動しているかどうか確認
 if lib.check_server_started() == True:
-    print("Server is already started")
-    sys.exit(0)
+    raise exceptions.server_is_started()
 
 #/etc/mcbe_management.jsonと/var/games/mcbe/script.jsonが存在するか確認 
 #存在しなかったらコピーする

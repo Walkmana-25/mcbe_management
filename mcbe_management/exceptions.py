@@ -42,6 +42,8 @@ class config_is_wrong(mcbe_exception):
 
 class server_is_started(mcbe_exception):
     """サーバーが停止していることが必要な処理で、サーバーが停止していなかったときに発生する例外クラス"""
+    def __init__(self):
+        logger.exception("Server is already Started.")
 
 class get_update_url_failed(mcbe_exception):
     """URLを取得に失敗したときに発生する例外クラス"""
