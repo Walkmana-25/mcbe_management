@@ -16,6 +16,8 @@ else:
     stream_handler.setLevel(INFO)
 logger.addHandler(stream_handler)
 
+logger.info("Starting daemon.")
+
 #初期確認を行う
 #serverがインストールされているか確認
 if lib.check_installed() == False:
@@ -31,9 +33,11 @@ if lib.check_server_started() == True:
 exist_config = os.path.exists("/etc/mcbe_management.json")
 exist_script = os.path.exists("/var/games/mcbe/script.json")
 if exist_config == False:
+    logger.info("/etc/mcbe_management.json is not exsiting. start copying")
     with open("/etc/mcbe_management.json", "x") as f:
         f.write(pkgutil.get_data("mcbe_management", "templete/mcbe_management.json").decode("utf-8"))
 if exist_script == False:
+    logger.info("/var/games/mcbe/script.json is not exsiting. start copying")
     with open("/var/games/mcbe/script.json", "x") as f:
         f.write(pkgutil.get_data("mcbe_management", "templete/script.json").decode("utf-8"))
 
@@ -52,6 +56,7 @@ discord_bot = config["discord_bot"]
 
 # auto_updateの設定
 if auto_update == True:
+    logger.info("Starting Auto Update")
     update.server_update(manual=False)
 
 #jsonのauto_updateの値を読み取って、cronに書き込む
@@ -100,14 +105,19 @@ if auto_backup["enable"] == True or auto_restart["enable"] == True:
     cron = "#/etc/cron.d/mcbe: crontab entries for the mcbe_management\nSHELL=/bin/bash\nPATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin\nMAILTO=root\nHOME=/\n"
     #auto_backupの書き込みをする準備
     if auto_backup["enable"] == True:
+        enable_auto_backup = auto_backup["enable"]
         cron += f"{backup_minute} {backup_hour} * * {backup_week} root mcbe backup\n"
     #auto_restartの書き込みをする準備
     if auto_restart["enable"] == True:
+        enable_auto_restart = auto_restart["enable"]
         cron += f"{restart_minute} {restart_hour} * * {restart_week} root mcbe restart\n"
 
     #現在のcronを読み込む
     #ファイルが存在しているか確認する
     if os.path.exists("/etc/cron.d/mcbe") == False:
+        logger.info("Generate file for cron.")
+        logger.info(f"Auto Backup:{enable_auto_backup}")
+        logger.info(f"Auto Restart]{enable_auto_restart}")
         with open("/etc/cron.d/mcbe", "w") as f:
             f.write(cron)
     else:
@@ -116,12 +126,18 @@ if auto_backup["enable"] == True or auto_restart["enable"] == True:
 
         #ファイルの内容を比較する
         if cron_before != cron:
+            logger.info("Config was updated. Updating file for cron.")
+            logger.info(f"Auto Backup:{enable_auto_backup}")
+            logger.info(f"Auto Restart:{enable_auto_restart}")
             with open("/etc/cron.d/mcbe", "w") as f:
                 f.write(cron)
 
 #auto_backupとauto_restartが両方falseのときに、削除する
 if auto_backup["enable"] == False and auto_restart["enable"] == False and os.path.exists("/etc/cron.d/mcbe") == True:
      os.remove("/etc/cron.d/mcbe")
+     logger.info("Config was updated. Updating file for cron.")
+     logger.info(f"Auto Backup:False")
+     logger.info(f"Auto Restart:False")
 
 #初期確認終わり
 #serverを起動する
@@ -132,6 +148,7 @@ with open("/var/games/mcbe/lock/demon_started", "w") as f:
     f.write("")
     
 #常時処理ここから
+logger.info("Server Started.")
 #================================================================
 while True:
     time.sleep(5)#5秒ごとに実行する
@@ -139,11 +156,13 @@ while True:
         data = f.read()
     if data in "crash" or data in "Crash":
         print("Server Crashed", file=sys.stderr)
+        logger.error("Bedrock Server Crashed.")
         sys.exit(1)
 
     #/var/games/mcbe/lock/demon_stopが存在したらdemonを止める処理を追加
     if os.path.exists("/var/games/mcbe/lock/demon_stop") == True:
         os.remove("/var/games/mcbe/lock/demon_started")
+        logger.info("Stop Daemon.")
         sys.exit()
 
 #================================================================
