@@ -29,6 +29,10 @@ class Server_already_installed(mcbe_exception):
     pass
 class Server_is_not_running(mcbe_exception):
     """サーバーが起動していないときに発生する例外クラス"""
+    def __init__(self):
+        pass
+    def __str__(self):
+        return "Server is not running"
 
 class  variable_class_mcbe_exception(mcbe_exception):
     """違う変数のクラスのときに発生する例外クラス"""

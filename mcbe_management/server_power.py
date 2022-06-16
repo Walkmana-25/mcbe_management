@@ -72,13 +72,17 @@ def start(option=None, auto=False):
     return "Server Started!"
 
 def stop(stop_demon=True):
+    logger.info("Stopping Minecraft Server")
+    logger.debug(f"Stop Demon:{stop_demon}")
     #サーバーが起動しているか確かめる
+    logger.debug(f"Server Started:{lib.check_server_started()}")
     if lib.check_server_started() == False:
-        return "Server is not running"
+        raise exceptions.Server_is_not_running
     if stop_demon == True:   
         #demonに終了信号を送る
         with open("/var/games/mcbe/lock/demon_stop","w") as f:
             f.write("")
+        logger.info("daemon stop signal sent.")
 
     #サーバー停止信号を送る
     args = (r"screen -S mcbe_server -X stuff 'stop \n'")
@@ -89,28 +93,34 @@ def stop(stop_demon=True):
     while True:
         console = f.read()
         console_out = "Quit correctly" in console
+        logger.debug(f"Quit Correctly in console:{console_out}")
         if console_out == True:
             break
         time.sleep(1)
     f.close
+    
 
     #screenのセッションを終了する
     args = (r"screen -S mcbe_server -X stuff 'exit \n'")
     result = subprocess.run(args, shell=True)
-
+    logger.debug("Screen Deleted")
     #lockファイルの削除
     os.remove("/var/games/mcbe/lock/started")
-
+    logger.debug("/var/games/mcbe/lock/started deleted.")
     if stop_demon == True:
         #demonが終了しているか確認する
         while True:
-            if os.path.exists("/var/games/mcbe/lock/demon_started") == False:
+            started = os.path.exists("/var/games/mcbe/lock/demon_started")
+            logger.debug(f"daemon started:{started}")
+            if started == False:
                 break
             print("Waiting for stopping demon....")
             time.sleep(1)
         os.remove("/var/games/mcbe/lock/demon_stop")
-
-    return "Server Stoped"
+        logger.info("daemon Stopped.")
+     
+    logger.info("Server Stopped")
+    return "Server Stopped"
 
 if __name__ == "__main__":
     start()
