@@ -19,8 +19,7 @@ logger.addHandler(stream_handler)
 #初期確認を行う
 #serverがインストールされているか確認
 if lib.check_installed() == False:
-    print("Server is not installed. Please run 'mcbe install'.", file=sys.stderr)
-    sys.exit(1)
+    raise exceptions.server_is_not_installed()
 
 #すでにserverが起動しているかどうか確認
 if lib.check_server_started() == True:

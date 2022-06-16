@@ -47,3 +47,5 @@ class get_update_url_failed(mcbe_exception):
     """URLを取得に失敗したときに発生する例外クラス"""
 class server_is_not_installed(mcbe_exception):
     """Serverがインストールされていないときに発生する例外クラス"""
+    def __init__(self):
+        logger.exception("MCB Server is not installed")
