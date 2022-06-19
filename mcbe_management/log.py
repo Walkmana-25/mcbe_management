@@ -27,7 +27,7 @@ stream_handler = StreamHandler()
 if debug_mode == True:
     stream_handler.setLevel(DEBUG)
 else:
-    stream_handler.setLevel(ERROR)
+    stream_handler.setLevel(INFO)
 #Formatを登録する
 stream_handler.setFormatter(handler_format)
 

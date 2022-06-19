@@ -39,6 +39,11 @@ class  variable_class_mcbe_exception(mcbe_exception):
 
 class config_is_wrong(mcbe_exception):
     """configのフォーマットが間違っているときに発生する例外クラス"""
+    def __init__(self, args=None):
+        if args == None:
+            pass
+        else:
+            logger.exception(f"{args}")
 
 class server_is_started(mcbe_exception):
     """サーバーが停止していることが必要な処理で、サーバーが停止していなかったときに発生する例外クラス"""

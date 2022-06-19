@@ -8,13 +8,6 @@ import time
 from logging import getLogger, StreamHandler, DEBUG, INFO
 #loggerの設定
 logger = getLogger("mcbe").getChild("daemon")
-#daemonは、stream handlerでinfoも出力する
-stream_handler = log.stream_handler
-if log.debug_mode == True:
-    stream_handler.setLevel(DEBUG)
-else:
-    stream_handler.setLevel(INFO)
-logger.addHandler(stream_handler)
 
 logger.info("Starting daemon.")
 
@@ -30,7 +23,9 @@ if lib.check_server_started() == True:
 #/etc/mcbe_management.jsonと/var/games/mcbe/script.jsonが存在するか確認 
 #存在しなかったらコピーする
 exist_config = os.path.exists("/etc/mcbe_management.json")
+logger.debug(f"/etc/mcbe_management.json exist:{exist_config}")
 exist_script = os.path.exists("/var/games/mcbe/script.json")
+logger.debug(f"/var/games/mcbe/script.json exist:{exist_script}")
 if exist_config == False:
     logger.info("/etc/mcbe_management.json is not exsiting. start copying")
     with open("/etc/mcbe_management.json", "x") as f:
@@ -47,6 +42,7 @@ with open("/etc/mcbe_management.json", "r") as load_config_json:
 re_text = re.sub(r'/\*[\s\S]*?\*/|//.*', '', text)
 config = json.loads(re_text)
 
+
 auto_update = config["auto_update"]
 auto_fix = config["auto_fix"]
 auto_backup = config["auto_backup"]
@@ -54,6 +50,7 @@ auto_restart = config["auto_restart"]
 discord_bot = config["discord_bot"]
 
 # auto_updateの設定
+logger.debug(f"auto_update:{auto_update}")
 if auto_update == True:
     logger.info("Starting Auto Update")
     update.server_update(manual=False)
@@ -64,39 +61,48 @@ if auto_backup["enable"] == True:
     backup_week = auto_backup["week"]
     backup_hour = auto_backup["hour"]
     backup_minute = auto_backup["min"]
+    logger.debug("auto_backup:True")
+    logger.debug(f"week{backup_week}")
+    logger.debug(f"hour{backup_hour}")
+    logger.debug(f"minute{backup_minute}")
+
 
     #weekを数字に変換する
     try:
         backup_week = lib.week_to_cron(backup_week)
     except exceptions.config_is_wrong:
-        print("Error. week in auto_backup is wrong. Please edit /etc/mcbe_management", file=sys.stderr)
-        sys.exit(1)
+        raise exceptions.config_is_wrong("Error. week in auto_backup is wrong. Please edit /etc/mcbe_management")
+    logger.debug(f"backup_week:{backup_week}")
     
     #hourを数字に変換する
     try:
         backup_hour = lib.hour_to_cron(backup_hour)
     except exceptions.config_is_wrong:
-        print("Error. hour in auto_backup is wrong. Please edit /etc/mcbe_management", file=sys.stderr) 
-        sys.exit(1) 
+        raise exceptions.config_is_wrong("Error. hour in auto_backup is wrong. Please edit /etc/mcbe_management")
+    logger.debug(f"backup_hour:{backup_hour}")
 
 if auto_restart["enable"] == True:
     #auto_backupの辞書を変数に変換する
     restart_week = auto_restart["week"]
     restart_hour = auto_restart["hour"]
     restart_minute = auto_restart["min"]
+    logger.debug("Auto Restart:True")
+    logger.debug(f"restart_week:{restart_week}")
+    logger.debug(f"restart_hour:{restart_hour}")
+    logger.debug(f"restart_minute:{restart_minute}")
 
     #weekを数字に変換する
     try:
         restart_week = lib.week_to_cron(restart_week)
     except exceptions.config_is_wrong:
-        print("Error. week in auto_restart is wrong. Please edit /etc/mcbe_management", file=sys.stderr)    
-        sys.exit(1)
+        raise exceptions.config_is_wrong("Error. week in auto_restart is wrong. Please edit /etc/mcbe_management")
+    logger.debug(f"restart_week:{restart_week}")    
     #hourを数字に変換する
     try:
         restart_hour = lib.hour_to_cron(restart_hour)
     except exceptions.config_is_wrong:
-        print("Error. hour in auto_restart is wrong. Please edit /etc/mcbe_management", file=sys.stderr)    
-        sys.exit(1)
+        raise exceptions.config_is_wrong("Error. hour in auto_restart is wrong. Please edit /etc/mcbe_management")
+    logger.debug(f"restart_hour:{restart_hour}")
 
 #crontabの書き込み
 if auto_backup["enable"] == True or auto_restart["enable"] == True:
@@ -110,6 +116,8 @@ if auto_backup["enable"] == True or auto_restart["enable"] == True:
     if auto_restart["enable"] == True:
         enable_auto_restart = auto_restart["enable"]
         cron += f"{restart_minute} {restart_hour} * * {restart_week} root mcbe restart\n"
+
+    logger.debug(cron)
 
     #現在のcronを読み込む
     #ファイルが存在しているか確認する
@@ -150,6 +158,7 @@ with open("/var/games/mcbe/lock/demon_started", "w") as f:
 logger.info("Server Started.")
 #================================================================
 while True:
+    logger.debug("Sleep 5s")
     time.sleep(5)#5秒ごとに実行する
     with open("/var/games/mcbe/server/output.txt", "r") as f:
         data = f.read()
@@ -159,6 +168,7 @@ while True:
         sys.exit(1)
 
     #/var/games/mcbe/lock/demon_stopが存在したらdemonを止める処理を追加
+    
     if os.path.exists("/var/games/mcbe/lock/demon_stop") == True:
         os.remove("/var/games/mcbe/lock/demon_started")
         logger.info("Stop Daemon.")
