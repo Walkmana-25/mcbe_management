@@ -1,14 +1,18 @@
 import subprocess
-from mcbe_management import lib, exceptions, server_power
+from mcbe_management import lib, exceptions, server_power, log
 import datetime
 import time
 import os
 import shutil
 import sys
+from logging import getLogger
 
 
 
-def backup():
+
+
+def backup():#Loggerの設定
+    logger = getLogger("mcbe").getChild("backup")
     #worldsフォルダーが存在しているか確認する
     if os.path.exists("/var/games/mcbe/server/worlds") == False:
         print("Worlds Folder is not exists. Please run 'mcbe start' first. ", file=sys.stderr)
@@ -55,6 +59,8 @@ def backup():
     result = subprocess.check_output(args)
 
 def restore():
+    #Loggerの設定
+    logger = getLogger("mcbe").getChild("restore")
     #バックアップ対象の日付を選択するためにlistを取得して、その内容を出力する
     files = os.listdir("/var/games/mcbe/backup")
     print("Please select the restore target in list")
