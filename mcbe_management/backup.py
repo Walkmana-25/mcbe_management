@@ -27,7 +27,7 @@ def backup():#Loggerの設定
         logger.debug(f"save hold:{save_hold}")
         #server側から、保存が終わったことを通知されるまで待つ(timeoutは5回)
         for i in range(6):
-            logger.debug("loop:",i)
+            logger.debug(f"loop:{i}")
             if i == 5:
                 raise exceptions.server_timeout
             save_result = lib.excute_inside_server("save query")
@@ -55,7 +55,7 @@ def backup():#Loggerの設定
     #本日分のbackup-baseが存在するか確認し、あればbackup-baseを作成する
     #同時に、server.properties, allowlist.json, permissions.jsonもコピーする
     if os.path.exists(backup_base_dir) == False:
-        logger.info("Create backup base:",backup_base_dir)
+        logger.info(f"Create backup base:{backup_base_dir}")
         os.makedirs(backup_base_dir)
         args = ["rsync", "-a", "/var/games/mcbe/server/worlds/", f"{backup_base_dir}"]
         subprocess.check_output(args)
