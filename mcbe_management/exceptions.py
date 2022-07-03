@@ -20,7 +20,9 @@ class screen_already_exists(mcbe_exception):
 
 class server_timeout(mcbe_exception):
     """サーバーが規定時間以内に起動しないときに発生する例外クラス"""
-    pass
+    def __init__(self, command):
+        logger.exception(f"Server timeout.Command:{command}")
+        
 class Required_package_does_not_installed(mcbe_exception):
     """必要なパッケージがインストールされていないときに発生する例外クラス"""
     pass
