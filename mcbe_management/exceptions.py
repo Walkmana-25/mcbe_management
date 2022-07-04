@@ -25,7 +25,8 @@ class server_timeout(mcbe_exception):
         
 class Required_package_does_not_installed(mcbe_exception):
     """必要なパッケージがインストールされていないときに発生する例外クラス"""
-    pass
+    def __init__(self, package):
+        logger.exception(f"{package}is not installed.")
 class Server_already_installed(mcbe_exception):
     """サーバーを二回インストールしようとしたときに発生する例外クラス"""
     pass
