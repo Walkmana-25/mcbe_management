@@ -7,6 +7,9 @@ import zipfile
 import subprocess
 import time
 import hashlib
+from logging import getLogger
+logger = getLogger("mcbe").getChild("lib")
+
 
 def check_installed():#インストール済みか判別
     """サーバーがインストール済みか判別"""
