@@ -20,7 +20,7 @@ def check_installed():#インストール済みか判別
 
 def server_download(url=None):#MCBE ServerをDLして解凍する
     """MCBE ServerをDLして解凍するよ"""
-        
+    logger.info("Starting server_download")
     os.makedirs("/tmp/mcbe_manegement", exist_ok=True)
     print("Downloading...")
     if url == None:
@@ -31,10 +31,12 @@ def server_download(url=None):#MCBE ServerをDLして解凍する
     f = open("/tmp/mcbe_manegement/server.zip", "w")
     f.write("")
     f.close
+    logger.debug(f"download from{mc_url}")
     urllib.request.urlretrieve(mc_url,"/tmp/mcbe_manegement/server.zip")#サーバーをDLしてzipを保存
     print("Extracting")
     with zipfile.ZipFile("/tmp/mcbe_manegement/server.zip", "r") as f:
         f.extractall("/tmp/mcbe_manegement/server")
+    logger.info("server_download completed")
     return mc_url
 
 
