@@ -72,8 +72,13 @@ def backup():#Loggerの設定
 def restore():
     #Loggerの設定
     logger = getLogger("mcbe").getChild("restore")
+    logger.info("Starting Restore")
     #バックアップ対象の日付を選択するためにlistを取得して、その内容を出力する
-    files = os.listdir("/var/games/mcbe/backup")
+    try:
+        files = os.listdir("/var/games/mcbe/backup")
+    except FileNotFoundError:
+        raise exceptions.Required_file_does_not_exist("/var/games/mcbe/backup")
+    logger.debug(f"files:{files}")
     print("Please select the restore target in list")
     print("---------------------")
     for f in files:
@@ -82,15 +87,17 @@ def restore():
 
     #ユーザーの入力がリストに含まれているか確認する
     while True:
-        user_input_date = str(input())
+        user_input_date = input()
+        user_input_date = str(user_input_date)
         if user_input_date in files:
             break
         else:
             print(f"{user_input_date} is not in list")
-
+    logger.debug(f"user_input_date:{user_input_date}")
     #バックアップ対象の時間を選択するためにlistを取得して、その内容を出力する
     files = os.listdir(f"/var/games/mcbe/backup/{user_input_date}")
     files_dir = [f for f in files if os.path.isdir(os.path.join(f"/var/games/mcbe/backup/{user_input_date}", f))]
+    logger.debug(f"files_dir{files_dir}")
     print("Please select the restore target in list")
     print("---------------------")
     for f in files_dir:
@@ -100,23 +107,27 @@ def restore():
 
     #ユーザーの入力がリストに含まれているか確認する
     while True:
-        user_input_time = str(input())
+        user_input_time = input()
+        user_input_time = str(user_input_time)
         if user_input_time in files_dir:
             break
         else:
             print(f"{user_input_time} is not in list")
-    
+    logger.debug(f"user_input_time:{user_input_time}") 
     #リストアを実行するか聞く
     print(f"Restore to data as of {user_input_date} {user_input_time}")
     print("Format:yyyy:mm:dd:hh:mm:ss")
     print("Are you sure? y or n")
+    logger.info(f"Try to restore:{user_input_date} {user_input_time}")
 
     #y or nを判定する
     while True:
         user_input_agree = str(input())
         if user_input_agree == "y":
+            logger.info("User agrred to restore")
             break
         elif user_input_agree == "n":
+            logger.info("User disagreed to restore")
             exit()
         else:
             print(f"Please enter y or n")
@@ -124,6 +135,7 @@ def restore():
     #worldsの中身をバックアップのやつに入れ替える
     #サーバーが起動しているか確認する
     if os.path.isfile("/var/games/mcbe/lock/started") == True:
+        logger.debug("stop server by restore")
         server_power.stop()
         print("Server stopped")
 
@@ -146,7 +158,8 @@ def restore():
             "server.properties"
         ]
     ]
-
+    logger.info(f"restore_sorce_dir:{restore_source_dir}")
+    logger.info(f"copy_file_source:{copy_file_source}")
     #削除するフォルダー、ファイルの指定
     delete_dir = "/var/games/mcbe/server/worlds/"
     delete_files = [
@@ -154,33 +167,39 @@ def restore():
         "/var/games/mcbe/server/permissions.json",
         "/var/games/mcbe/server/server.properties"
     ]
-
+    logger.info(f"delete_dir:{delete_dir}")
+    logger.info(f"delete_files:{delete_files}")
     #ファイルの削除の実行
     #delete_filesの中のファイルの削除
     for file in delete_files:
+        logger.debug(f"delete:{file}")
         try:
             os.remove(file)
         except FileNotFoundError:
-            print(f"{file} is not found. Cannot Delete.", file=sys.stderr)
+            exceptions.Required_file_does_not_exist(file)
         
     #フォルダーの削除
+    logger.debug(f"delete:{delete_dir}")
     shutil.rmtree(delete_dir)
 
     #ファイルコピーの実行
     for i in copy_file_source:
+        logger.debug(f"copy file:{i}")
         shutil.copy2(i[0], f"/var/games/mcbe/server/{i[1]}")
-
+    
+    logger.debug(f"copy dir:{restore_source_dir}")
     shutil.copytree(restore_source_dir, "/var/games/mcbe/worlds")
 
     #完了!!!
+    logger.info("Restore Completed")
     print("Restore Completed!!")
 
 if __name__ == "__main__":
     print("Enter Function")
-    input = input()
-    if input == "backup":
+    command = input()
+    if command == "backup":
         backup()
-    elif input == "restore":
+    elif command == "restore":
         restore()
     else:
         print("error")
