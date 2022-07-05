@@ -1,7 +1,7 @@
 import subprocess
 import os 
 #from mcbe_management import lib, exceptions
-from mcbe_management import lib, exceptions#for dev
+from mcbe_management import lib, exceptions,log#for dev
 import sys
 import shutil
 import pkgutil
