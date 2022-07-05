@@ -33,7 +33,7 @@ class Server_already_installed(mcbe_exception):
 class Server_is_not_running(mcbe_exception):
     """サーバーが起動していないときに発生する例外クラス"""
     def __init__(self):
-        pass
+        logger.exception("Server is not running")
     def __str__(self):
         return "Server is not running"
 
