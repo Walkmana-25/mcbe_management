@@ -1,4 +1,3 @@
-fire
-selenium
+fire == 0.4.0
+selenium == 4.2.0
 chromedriver_binary-auto
-requests
