@@ -15,3 +15,15 @@ def backup():
 
 def restore():
     logger = getLogger("mcbe").getChild("backup")
+
+
+
+if __name__ == "__main__":
+    command = input("Enter Function")
+    if command == "backup":
+        backup()
+    elif command == "restore":
+        restore()
+    else:
+        print("error")
+        sys.exit(1)
