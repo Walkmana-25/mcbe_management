@@ -7,3 +7,11 @@ import os
 import shutil
 import sys
 from logging import getLogger
+
+
+def backup():
+    logger = getLogger("mcbe").getChild("backup")
+
+
+def restore():
+    logger = getLogger("mcbe").getChild("backup")
