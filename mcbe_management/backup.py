@@ -35,6 +35,32 @@ def backup():
     else:
         logger.debug("Server is not running.")
 
+    #日時の取得
+    dt = datetime.datetime.today()     
+    today = "{0:%Y-%m-%d}".format(dt)
+    now = "{0:%H-%M-%S}".format(dt)
+
+    #backup passの設定
+    backup_dir = f"/var/games/mcbe/backup/backup-{today}.{now}"
+    logger.debug(f"backup_dir:{backup_dir}")
+
+    #backupが存在するか確かめる
+    files = []
+    backup_exist = True 
+    try:
+        files = os.listdir("/var/games/mcbe/backup")
+    except FileNotFoundError:
+        backup_exist = False
+
+
+    #backupを実行する
+    if backup_exist == True:
+        pass
+
+    else:
+        pass
+    
+
 def restore():
     logger = getLogger("mcbe").getChild("backup")
 
