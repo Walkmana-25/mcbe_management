@@ -1,3 +1,4 @@
+from re import I
 import subprocess
 from mcbe_management import lib, exceptions, server_power, log
 import datetime
@@ -51,15 +52,31 @@ def backup():
         files = os.listdir("/var/games/mcbe/backup")
     except FileNotFoundError:
         backup_exist = False
-
+    os.debug(f"backup_exist:{backup_exist}")
 
     #backupを実行する
     if backup_exist == True:
         pass
 
     else:
-        pass
-    
+        logger.info("Starting backup")
+        logger.info(f"backup directory:{backup_dir}")
+
+        os.makedirs("/var/games/mcbe/backup")
+
+        logger.debug("Create directory /var/games/mcbe/backup")
+
+        args = ["rsync", "-a", "/var/games/mcbe/server/", f"{backup_dir}"]
+        rsync = subprocess.run(args=args, capture_output=True)
+        #rsyncが成功したかしていないか確かめる
+        if args.returncode != 0:
+            raise exceptions.backup_failed(
+                error_code= rsync.returncode,
+                excuted_command=rsync.args,
+                stderr=rsync.stderr
+            )            
+        logger.info("Backup Completed")
+        logger.info(backup_dir)
 
 def restore():
     logger = getLogger("mcbe").getChild("backup")
