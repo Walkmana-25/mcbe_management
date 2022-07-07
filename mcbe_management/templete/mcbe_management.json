@@ -2,6 +2,7 @@
 //for detail, please see https://github.com/Walkmana-25/mcbe_management.
 {
     "auto_update": false, 
+    "debug_mode": false,
     "auto_fix": true,//reinstall bedrock server when it crash
     "auto_backup": {//do not same time with auto restart
         "enable": false,

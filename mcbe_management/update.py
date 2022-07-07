@@ -1,9 +1,12 @@
-from mcbe_management import lib, exceptions, backup, get_update
+from mcbe_management import lib, exceptions, backup, get_update, log
 import json
 import os
 import shutil
+from logging import getLogger
+logger = getLogger("mcbe").getChild("update")
 
 def server_update(manual=True, force=False):
+    logger.info("Starting Update")
     if manual == True:
         print("Update Minecraft Server")
     #Serverが起動しているか確認
@@ -18,15 +21,19 @@ def server_update(manual=True, force=False):
     #jsonから現在のversionを読み込む
     setting = ""
     with open("/var/games/mcbe/script.json") as f:
-        settings = json.load(f)
+        setting = json.load(f)
     #json.loadがstrを返したら、dicrionaryに変換する
-    if type(settings) is str:
+    if type(setting) is str:
         setting = eval(setting)
-    
-    current_version = settings["mc_version"]
+    logger.debug(f"setting:{setting}")    
+
+    current_version = setting["mc_version"]
+    logger.info(f"Current MC Version:{current_version}") 
+    logger.info(f"Remote version:{version}")
 
     #versionを比較する
     if  version != current_version or force == True:
+        logger.info(f"Update Server to {version}")
         print("Starting Update")
         #先にバックアップをする
         print("backupping...")
@@ -43,6 +50,8 @@ def server_update(manual=True, force=False):
             ["/var/games/mcbe/server/permissions.json", "/tmp/mcbe_manegement/data/permissions.json"]
         ]
         copy_folder = ["/var/games/mcbe/server/worlds/", "/tmp/mcbe_manegement/data/worlds"]
+        logger.debug(f"copy list:{copy_list}")
+        logger.debug(f"copy_colder:{copy_folder}")
         for i in copy_list:
             shutil.copy2(i[0], i[1])
 
@@ -50,6 +59,7 @@ def server_update(manual=True, force=False):
 
         #現在のサーバーを削除する
         shutil.rmtree("/var/games/mcbe/server")
+        logger.debug("Delete Server")
 
         #updateを実行する
         lib.server_download(url)
@@ -72,9 +82,9 @@ def server_update(manual=True, force=False):
         shutil.copytree(copy_folder[1], copy_folder[0])
 
         #Jsonに書き込む
-        settings["mc_version"] = version
+        setting["mc_version"] = version
         with open("/var/games/mcbe/script.json", "w") as f:
-            json.dump(settings, f, indent=4)   
+            json.dump(setting, f, indent=4)   
 
 
 
@@ -82,8 +92,13 @@ def server_update(manual=True, force=False):
         f = open("/var/games/mcbe/server/output.txt", "w")
         f.write("")
         f.close()
+        logger.info("Update Completed")
         
         return "Update Completed"
 
     else:
+        logger.info("Server do not need update")
         return "Update is not needed."
+
+if __name__ == "__main__":
+    server_update(force=True)
