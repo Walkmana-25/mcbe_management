@@ -42,41 +42,68 @@ def backup():
     now = "{0:%H-%M-%S}".format(dt)
 
     #backup passの設定
-    backup_dir = f"/var/games/mcbe/backup/backup-{today}.{now}"
+    backup_dir = f"/var/games/mcbe/backup/backup_{today}-{now}"
     logger.debug(f"backup_dir:{backup_dir}")
 
     #backupが存在するか確かめる
     files = []
     backup_exist = True 
-    try:
-        files = os.listdir("/var/games/mcbe/backup")
-    except FileNotFoundError:
-        backup_exist = False
-    os.debug(f"backup_exist:{backup_exist}")
+    os.makedirs("/var/games/mcbe/backup/", exist_ok=True)
+    files = os.listdir("/var/games/mcbe/backup/")
+
+    logger.debug(f"backup_exist:{backup_exist}")
+    logger.debug(f"files:{files}")    
 
     #backupを実行する
-    if backup_exist == True:
-        pass
+    if files != []:
+        complete_backup = []
+        for i in files:
+            complete_backup.append(i.replace("backup_", "")) 
+
+        logger.debug(f"complete_backup:{complete_backup}")
+
+        #並び替えて、0番目のフォルダーを--link-destにする
+        complete_backup.sort()
+
+        #backupを実行する
+        logger.info(f"Create backup:{backup_dir}")
+        logger.info(f"Link dest:/var/games/mcbe/backup/backup_{complete_backup[0]}/")
+        args = [
+            "rsync",
+            "-a",
+            f"--link-dest=/var/games/mcbe/backup/backup_{complete_backup[0]}/",
+            "/var/games/mcbe/server/",
+            f"{backup_dir}/"
+        ]
+        rsync = subprocess.run(args=args, capture_output=True)
+        #rsyncが成功したか確かめる
+        if rsync.returncode != 0:
+            raise exceptions.backup_failed(
+                error_code=rsync.returncode,
+                excuted_command=rsync.args,
+                stderr=rsync.stderr
+            )
+        logger.info("Backup Completed")
+        
 
     else:
         logger.info("Starting backup")
         logger.info(f"backup directory:{backup_dir}")
 
-        os.makedirs("/var/games/mcbe/backup")
 
         logger.debug("Create directory /var/games/mcbe/backup")
+        logger.info(f"Create backup:{backup_dir}")
 
-        args = ["rsync", "-a", "/var/games/mcbe/server/", f"{backup_dir}"]
+        args = ["rsync", "-a", "/var/games/mcbe/server/", f"{backup_dir}/"]
         rsync = subprocess.run(args=args, capture_output=True)
         #rsyncが成功したかしていないか確かめる
-        if args.returncode != 0:
+        if rsync.returncode != 0:
             raise exceptions.backup_failed(
                 error_code= rsync.returncode,
                 excuted_command=rsync.args,
                 stderr=rsync.stderr
             )            
         logger.info("Backup Completed")
-        logger.info(backup_dir)
 
 def restore():
     logger = getLogger("mcbe").getChild("backup")
