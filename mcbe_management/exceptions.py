@@ -72,3 +72,7 @@ class backup_failed(mcbe_exception):
         logger.exception(f"Command:{excuted_command}")
         logger.exception(f"ReturnCode:{error_code}")
         logger.exception(f"Stderr:{stderr}")
+
+class backup_not_found(mcbe_exception):
+    """backupが存在しない時に発生する例外クラス"""
+    logger.exception("Backup is not found.")
