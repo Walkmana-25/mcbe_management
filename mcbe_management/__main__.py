@@ -11,8 +11,13 @@ class server_io(object):
     """
 
     def start(option="normal"):
+        """Start Server.
+        Should not normally be used.
+        Use systemctl start mcbe instead.
+        """           
+        
+        
         ans = ""
-        """Start Server(To force activation, use the start_force)"""
         try:
             ans = server_power.start(option)
         except exceptions.Required_file_does_not_exist:
@@ -24,21 +29,12 @@ class server_io(object):
 
         return ans
 
-    def start_force(option="force"):
-        ans = ""
-        """Start Server(Force)"""
-        try:
-            ans = server_power.start("force")
-        except exceptions.Required_file_does_not_exist:
-            print("Error:Required File does not exist.", file=sys.stderr)
-        except exceptions.screen_already_exists:
-            print("Error: Server has already started.", file=sys.stderr)
-
-        return ans
-
-
     def stop(self):
-        """Stop Server"""
+        """
+        Stop Server. 
+        Should not normally be used.
+        Use systemctl stop mcbe instead.
+        """
         out = server_power.stop()
         return out
 
