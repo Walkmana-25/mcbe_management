@@ -6,6 +6,9 @@ import subprocess
 
 
 class server_io(object):
+    """
+    A Manegement program for Minecraft Bedrock Server
+    """
 
     def start(option="normal"):
         ans = ""
