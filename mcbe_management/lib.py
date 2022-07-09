@@ -7,6 +7,9 @@ import zipfile
 import subprocess
 import time
 import hashlib
+from logging import getLogger
+logger = getLogger("mcbe").getChild("lib")
+
 
 def check_installed():#インストール済みか判別
     """サーバーがインストール済みか判別"""
@@ -17,7 +20,7 @@ def check_installed():#インストール済みか判別
 
 def server_download(url=None):#MCBE ServerをDLして解凍する
     """MCBE ServerをDLして解凍するよ"""
-        
+    logger.info("Starting server_download")
     os.makedirs("/tmp/mcbe_manegement", exist_ok=True)
     print("Downloading...")
     if url == None:
@@ -28,10 +31,12 @@ def server_download(url=None):#MCBE ServerをDLして解凍する
     f = open("/tmp/mcbe_manegement/server.zip", "w")
     f.write("")
     f.close
+    logger.debug(f"download from{mc_url}")
     urllib.request.urlretrieve(mc_url,"/tmp/mcbe_manegement/server.zip")#サーバーをDLしてzipを保存
     print("Extracting")
     with zipfile.ZipFile("/tmp/mcbe_manegement/server.zip", "r") as f:
         f.extractall("/tmp/mcbe_manegement/server")
+    logger.info("server_download completed")
     return mc_url
 
 
@@ -40,6 +45,7 @@ def check_server_started():
     return os.path.isfile("/var/games/mcbe/lock/started")
 
 def excute_inside_server(input):
+    logger.info(f"starting excute_inside_server:input:{input}")
     """Minecraft Server内でコマンドを実行して、その実行結果を取得する"""
     #サーバーが起動しているか確認
     if check_server_started() == False:
@@ -56,10 +62,10 @@ def excute_inside_server(input):
     #screen内でcommandの実行
     args = (f"screen -S mcbe_server -X stuff '{input} \n'")
     result = subprocess.run(args, shell=True)
-
+    logger.info(f"excute:{args}")
     #output.txtのハッシュ値が更新されるまで待つ(timeoutは5s)(1sごとに)
     for i in range(5):
-
+        logger.debug(f"loop:{i}")
         with open("/var/games/mcbe/server/output.txt","rb") as file:
             time.sleep(1)
             fileData = file.read()
@@ -80,7 +86,8 @@ def excute_inside_server(input):
         if line_num > before_output_line:
             output += f"{line}\n"
         line_num += 1
-
+    logger.info(f"excute_inside_server completed")
+    logger.info(f"output:{output}")
     return output
 
 def week_to_cron(input_week):
