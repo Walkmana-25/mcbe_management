@@ -1,3 +1,5 @@
+from distutils.log import error
+from errno import errorcode
 from logging import getLogger
 from mcbe_management import log
 import os
@@ -61,9 +63,25 @@ class server_is_not_installed(mcbe_exception):
     def __init__(self):
         logger.exception("MCB Server is not installed")
 
+
 class server_crash(mcbe_exception):
     """Serverがクラッシュした時に発生する例外クラス"""
     def __init__(self):
         #demon_startedを削除する
         os.remove("/var/games/mcbe/lock/demon_started")
         logger.exception("Server Crashed")
+
+class backup_failed(mcbe_exception):
+    """Backupが失敗した時に発生する例外クラス"""
+    def __init__(self, error_code, excuted_command, stderr):
+        self.error_code = error_code
+        self.excuted_command = excuted_command
+        self.stderr = stderr
+        logger.exception("Backup error")
+        logger.exception(f"Command:{excuted_command}")
+        logger.exception(f"ReturnCode:{error_code}")
+        logger.exception(f"Stderr:{stderr}")
+
+class backup_not_found(mcbe_exception):
+    """backupが存在しない時に発生する例外クラス"""
+    logger.exception("Backup is not found.")

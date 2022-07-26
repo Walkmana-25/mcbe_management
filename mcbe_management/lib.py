@@ -1,3 +1,6 @@
+from importlib.resources import contents
+import re
+import json
 import os
 import shutil
 #from mcbe_management import get_update
@@ -169,3 +172,29 @@ def url_to_version(url):
     mc_version = r5.strip(".")
     
     return mc_version
+
+def load_json(path):
+    with open(path, "r") as load_json:
+        text = load_json.read()
+    
+    re_text = re.sub(r'/\*[\s\S]*?\*/|//.*', '', text)
+    return json.loads(re_text) 
+
+class dump_json():
+    def __init__(self):
+        self.content = {}
+        self.path = ""
+        
+    def add(self,content):
+        self.content = content
+
+    def set_path(self, path):
+        self.path = path
+       
+    def write(self):
+        write_json = json.dumps(self.content)
+        with open(self.path, "w") as f:
+            json.dump(write_json, f, indent=4)
+        
+
+    
