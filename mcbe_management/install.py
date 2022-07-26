@@ -101,11 +101,14 @@ def install():
 
     #jsonファイルにVersion情報を書き込む
     settings["mc_version"] = lib.url_to_version(url)
-    write_json = json.dumps(settings)
-    with open("/var/games/mcbe/script.json", "w") as f:
-        json.dump(write_json, f, indent=4)
+
+
+    write_json = lib.dump_json()
+    write_json.add(settings)
+    write_json.set_path("/var/games/mcbe/script.json")
     logger.debug(f"write json : {write_json}")
     logger.info("install completed")
+
 
     print("Please edit /var/games/mcbe/server/server.properties")
     print("After, You can start server with mcbe start")
