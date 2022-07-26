@@ -21,11 +21,11 @@ class server_io(object):
         try:
             ans = server_power.start(option)
         except exceptions.Required_file_does_not_exist:
-            print("Error:Required File does not exist.", file=sys.stderr)
+            print("Error:Required File does not exist.")
         except exceptions.screen_already_exists:
-            print("Error: Server has already started.", file=sys.stderr)
+            print("Error: Server has already started.")
         except exceptions.server_timeout:
-            print("Server could not start.", file=sys.stderr)
+            print("Server could not start.")
 
         return ans
 
@@ -39,13 +39,16 @@ class server_io(object):
         return out
 
     def install(self):
-        """Install Server"""
+        """Install Server
+        Should not normally be used.
+        Use systemctl start mcbe instead."""
+
         try:
             out = install.install()
         except exceptions.Server_already_installed:
             print("Server has already installed.")
         except exceptions.Required_package_does_not_installed:
-            print("Google Chrome or Screen is not installed. Please install them.", file=sys.stderr)
+            print("Google Chrome or Screen is not installed. Please install them.")
 
     def restore(self):
         """Restore Server data"""
