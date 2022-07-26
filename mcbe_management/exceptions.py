@@ -65,5 +65,5 @@ class server_crash(mcbe_exception):
     """Serverがクラッシュした時に発生する例外クラス"""
     def __init__(self):
         #demon_startedを削除する
-        os.remove("/var/games/mcbe/lock/demon_stated")
+        os.remove("/var/games/mcbe/lock/demon_started")
         logger.exception("Server Crashed")
