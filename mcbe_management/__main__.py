@@ -19,6 +19,7 @@ class server_io(object):
         Use systemctl start mcbe instead.
         """           
         
+        logger.warning("Should not normally be used.Use systemctl start mcbe instead.")
         
         ans = ""
         try:
@@ -38,6 +39,7 @@ class server_io(object):
         Should not normally be used.
         Use systemctl stop mcbe instead.
         """
+        logger.warning("Should not normally be used.Use systemctl stop mcbe instead.")
         out = server_power.stop()
         return out
 
@@ -45,6 +47,7 @@ class server_io(object):
         """Install Server
         Should not normally be used.
         Use systemctl start mcbe instead."""
+        
 
         try:
             out = install.install()
