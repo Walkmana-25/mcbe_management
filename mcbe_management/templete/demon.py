@@ -156,16 +156,26 @@ with open("/var/games/mcbe/lock/demon_started", "w") as f:
     
 #常時処理ここから
 logger.info("Server Started.")
+num = 0
 #================================================================
 while True:
     logger.debug("Sleep 5s")
     time.sleep(5)#5秒ごとに実行する
     with open("/var/games/mcbe/server/output.txt", "r") as f:
         data = f.read()
-    if data in "crash" or data in "Crash":
-        print("Server Crashed", file=sys.stderr)
-        logger.error("Bedrock Server Crashed.")
-        sys.exit(1)
+    if "crash" in data or "Crash" in data:
+        if auto_fix == True:
+            logger.error("Bedrock Server Crashed.")
+            logger.error("Trying Fix")
+            server_power.auto_fix(num)
+            num += 1
+        else:
+            logger.error("Bedrock Server Crashed.")
+            server_power.stop(stop_demon=False)
+            raise exceptions.server_crash
+            
+            
+
 
     #/var/games/mcbe/lock/demon_stopが存在したらdemonを止める処理を追加
     

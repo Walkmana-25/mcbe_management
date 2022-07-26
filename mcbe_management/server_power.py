@@ -1,7 +1,7 @@
 import subprocess
 import os
 import time
-from mcbe_management import exceptions, lib, log
+from mcbe_management import exceptions, lib, log, update
 from logging import getLogger
 #TODO screen がすでに存在していた時の処理
 #TODO2 標準エラー出力についての設定
@@ -125,3 +125,28 @@ def stop(stop_demon=True):
 if __name__ == "__main__":
     start()
     stop()
+
+def auto_fix(num):
+    #0回の時はサーバーを再起動する
+    if num == 0:
+        #サーバーを停止させる
+        stop(stop_demon=False)
+        #サーバーを起動させる
+        start()
+
+    #1回のときはサーバーを再インストールする
+    if num == 1:
+        #サーバーを停止させる
+        stop(stop_demon=False)
+        #サーバーを強制アップデートする
+        update.server_update(manual=False, force=True)
+        #サーバーを起動させる
+        start()
+
+    #2回以上の時はサーバーを停止させる
+    if num >= 2:
+        #サーバを停止させる
+        stop(stop_demon=False)
+        #エラーを発生させる
+        logger.error("Failed to fix")
+        raise exceptions.server_crash()
