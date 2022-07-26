@@ -1,9 +1,12 @@
 import subprocess
 import sys
 import fire
-from mcbe_management import exceptions, server_power, install, backup
+from mcbe_management import exceptions, server_power, install, backup, log
 import subprocess
 
+#loggerの設定
+from logging import getLogger
+logger = getLogger("mcbe").getChild("main")
 
 class server_io(object):
     """
