@@ -3,12 +3,11 @@ Description=Minecraft Bedrock Server Management Service
 After=network.target
 
 [Service]
-Type=oneshot
+Type=notify
 ExecStart=$python_dir /var/games/mcbe/demon.py
 ExecStop=$python_dir /var/games/mcbe/stop.py
-Restart on-failure
+Restart =on-failure
 User=root
 Group=root
-RemainAfterExit=yes
 [Install]
 WantedBy=multi-user.target

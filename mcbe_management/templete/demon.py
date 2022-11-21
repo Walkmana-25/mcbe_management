@@ -6,10 +6,12 @@ import pkgutil
 import re
 import time
 from logging import getLogger, StreamHandler, DEBUG, INFO
+from systemd import daemon
 #loggerの設定
 logger = getLogger("mcbe").getChild("daemon")
 
 logger.info("Starting daemon.")
+daemon.notify("STATUS=Starting...")
 
 #初期確認を行う
 #serverがインストールされているか確認
@@ -157,6 +159,7 @@ with open("/var/games/mcbe/lock/demon_started", "w") as f:
 #常時処理ここから
 logger.info("Server Started.")
 num = 0
+daemon.notify("READY=1")
 #================================================================
 while True:
     logger.debug("Sleep 5s")
