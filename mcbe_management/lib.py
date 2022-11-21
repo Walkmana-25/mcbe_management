@@ -45,7 +45,11 @@ def server_download(url=None):#MCBE ServerをDLして解凍する
 
 def check_server_started():
     """サーバーが起動しているか判別するよ"""
-    return os.path.isfile("/var/games/mcbe/lock/started")
+    exist = os.path.isfile("/var/games/mcbe/lock/started")
+    if exist:
+        return True
+    else:
+        return False
 
 def excute_inside_server(input):
     logger.info(f"starting excute_inside_server:input:{input}")
