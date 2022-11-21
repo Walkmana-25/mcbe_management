@@ -3,6 +3,7 @@ import os
 import time
 from mcbe_management import exceptions, lib, log, update
 from logging import getLogger
+from glob import glob
 #TODO screen がすでに存在していた時の処理
 #TODO2 標準エラー出力についての設定
 #minecraft serverが正常に起動したか確かめる(output.txtからserver startedが出力されて、3秒いないにcrashが表示されないかどうか)
@@ -25,8 +26,13 @@ def start(option=None, auto=False):
     
     #サーバーがすでに起動しているか確かめる
     
-    if lib.check_server_started == True:
-        raise exceptions.screen_already_exists()
+    if os.path.isfile("/var/games/mcbe/lock/started") == True:
+        screen_list = []
+        screen_list += glob("/tmp/screen/S-root/*.mcbe_server")
+        screen_list += glob("/run/screen/S-root/*.mcbe_server")
+        screen_list += glob("/root/.screen/*.mcbe_server")
+        if(screen_list != []):
+            raise exceptions.screen_already_exists()
 
 
     #screen の準備
@@ -90,12 +96,15 @@ def stop(stop_demon=True):
 
     #bedrock serverのコンソール上でQuit correctlyが表示されているか確認
     f = open("/var/games/mcbe/server/output.txt", "r")
-    while True:
+    for i in range(30):
         console = f.read()
         console_out = "Quit correctly" in console
         logger.debug(f"Quit Correctly in console:{console_out}")
         if console_out == True:
             break
+        print(f"Waiting:{i}/30s")
+        if(i == 29):
+            print("Timeout. Stop force.")
         time.sleep(1)
     f.close
     
@@ -104,6 +113,16 @@ def stop(stop_demon=True):
     args = (r"screen -S mcbe_server -X stuff 'exit \n'")
     result = subprocess.run(args, shell=True)
     logger.debug("Screen Deleted")
+
+    #MCBE ServerのScreenが残っていたら全部消す
+    
+    screen_list = []
+    screen_list += glob("/tmp/screen/S-root/*.mcbe_server")
+    screen_list += glob("/run/screen/S-root/*.mcbe_server")
+    screen_list += glob("/root/.screen/*.mcbe_server")
+    for i in screen_list:
+        os.remove(i)
+
     #lockファイルの削除
     os.remove("/var/games/mcbe/lock/started")
     logger.debug("/var/games/mcbe/lock/started deleted.")
