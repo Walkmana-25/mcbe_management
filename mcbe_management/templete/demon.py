@@ -160,6 +160,7 @@ with open("/var/games/mcbe/lock/demon_started", "w") as f:
 logger.info("Server Started.")
 num = 0
 daemon.notify("READY=1")
+daemon.notify("STATUS=Server Running")
 #================================================================
 while True:
     logger.debug("Sleep 5s")
@@ -170,10 +171,12 @@ while True:
         if auto_fix == True:
             logger.error("Bedrock Server Crashed.")
             logger.error("Trying Fix")
+            daemon.notify("STATUS=Server trying fixing")
             server_power.auto_fix(num)
             num += 1
         else:
             logger.error("Bedrock Server Crashed.")
+            daemon.notify("STATUS=Server Crashed")
             server_power.stop(stop_demon=False)
             raise exceptions.server_crash
             
@@ -185,6 +188,7 @@ while True:
     if os.path.exists("/var/games/mcbe/lock/demon_stop") == True:
         os.remove("/var/games/mcbe/lock/demon_started")
         logger.info("Stop Daemon.")
+        daemon.notify("STATUS=Server Stopped")
         sys.exit()
 
 #================================================================
