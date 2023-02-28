@@ -55,6 +55,9 @@ discord_bot = config["discord_bot"]
 logger.debug(f"auto_update:{auto_update}")
 if auto_update == True:
     logger.info("Starting Auto Update")
+    
+    daemon.notify("STATUS=Updating...")
+    daemon.notify("READY=1")
     update.server_update(manual=False)
 
 #jsonのauto_updateの値を読み取って、cronに書き込む
